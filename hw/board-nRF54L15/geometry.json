@@ -1,0 +1,1467 @@
+{
+  "schema_version": 1,
+  "board": "board-nRF54L15",
+  "footprint": "XIAO_nRF54L15_SMD",
+  "coordinate_frame": "USB-up top view; origin at physical module through-hole header-grid center; +Y toward antenna; all geometry local mm",
+  "module": {
+    "name": "Seeed Studio XIAO nRF54L15",
+    "pcb_size_mm": [
+      17.78,
+      20.955
+    ],
+    "source_url": "https://files.seeedstudio.com/wiki/XIAO_nRF54L15/Getting_Start/nRF54L15_KICAD.zip",
+    "vendor_pcb": "XIAO nRF54l15.kicad_pcb",
+    "source_header_origin_mm": [
+      108.3477,
+      72.836
+    ],
+    "placement": {
+      "x_mm": 64.0,
+      "y_mm": 60.5,
+      "rotation_deg": 0
+    },
+    "source_board_thickness_mm": 1.6,
+    "pcb_bounds_mm": [
+      -8.89,
+      -10.541,
+      8.89,
+      10.414
+    ]
+  },
+  "edge_land_basis": "2.75x2.0mm SMD lands at x=+/-8.0825 from supplied Seeed nRF54L15 footprint; nRF52840 supplied lands differ only by 0.0275mm common X shift.",
+  "edge_lands": [
+    {
+      "pad": "1",
+      "net_role": "D0",
+      "center_mm": [
+        -8.0825,
+        -7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "2",
+      "net_role": "D1",
+      "center_mm": [
+        -8.0825,
+        -5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "3",
+      "net_role": "D2",
+      "center_mm": [
+        -8.0825,
+        -2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "4",
+      "net_role": "D3",
+      "center_mm": [
+        -8.0825,
+        0.0
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "5",
+      "net_role": "D4",
+      "center_mm": [
+        -8.0825,
+        2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "6",
+      "net_role": "D5",
+      "center_mm": [
+        -8.0825,
+        5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "7",
+      "net_role": "D6",
+      "center_mm": [
+        -8.0825,
+        7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "8",
+      "net_role": "D7",
+      "center_mm": [
+        8.0825,
+        7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "9",
+      "net_role": "D8",
+      "center_mm": [
+        8.0825,
+        5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "10",
+      "net_role": "D9",
+      "center_mm": [
+        8.0825,
+        2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "11",
+      "net_role": "D10",
+      "center_mm": [
+        8.0825,
+        0.0
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "12",
+      "net_role": "3V3",
+      "center_mm": [
+        8.0825,
+        -2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "13",
+      "net_role": "GND",
+      "center_mm": [
+        8.0825,
+        -5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "14",
+      "net_role": "VBUS",
+      "center_mm": [
+        8.0825,
+        -7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    }
+  ],
+  "battery_lands": [
+    {
+      "pad": "31",
+      "net_role": "VBAT",
+      "vendor_reference": "TP9",
+      "center_mm": [
+        -0.961,
+        4.9277
+      ],
+      "size_mm": [
+        1.016,
+        2.032
+      ],
+      "shape": "roundrect",
+      "roundrect_rratio": 0.25
+    },
+    {
+      "pad": "32",
+      "net_role": "GND",
+      "vendor_reference": "TP10",
+      "center_mm": [
+        1.039,
+        4.9227
+      ],
+      "size_mm": [
+        1.016,
+        2.032
+      ],
+      "shape": "roundrect",
+      "roundrect_rratio": 0.25
+    }
+  ],
+  "unused_contacts": [
+    {
+      "ref": "TP1",
+      "net": "nRF54_SWCLK",
+      "center_mm": [
+        1.294,
+        -8.6923
+      ],
+      "bounds_mm": [
+        0.7225,
+        -9.2638,
+        1.8655,
+        -8.1208
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        0.4725,
+        -9.5138,
+        2.1155,
+        -7.8708
+      ]
+    },
+    {
+      "ref": "TP11",
+      "net": "P1.08{slash}SAMD11_TX",
+      "center_mm": [
+        5.044,
+        -3.8623
+      ],
+      "bounds_mm": [
+        4.244,
+        -4.6623,
+        5.844,
+        -3.0623
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        3.994,
+        -4.9123,
+        6.094,
+        -2.8123
+      ]
+    },
+    {
+      "ref": "TP12",
+      "net": "P1.09{slash}SAMD11_RX",
+      "center_mm": [
+        5.044,
+        -1.3223
+      ],
+      "bounds_mm": [
+        4.244,
+        -2.1223,
+        5.844,
+        -0.5223
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        3.994,
+        -2.3723,
+        6.094,
+        -0.2723
+      ]
+    },
+    {
+      "ref": "TP13",
+      "net": "Net-(TP13-T)",
+      "center_mm": [
+        5.044,
+        1.2177
+      ],
+      "bounds_mm": [
+        4.244,
+        0.4177,
+        5.844,
+        2.0177
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        3.994,
+        0.1677,
+        6.094,
+        2.2677
+      ]
+    },
+    {
+      "ref": "TP14",
+      "net": "Net-(TP14-T)",
+      "center_mm": [
+        5.044,
+        3.756
+      ],
+      "bounds_mm": [
+        4.244,
+        2.956,
+        5.844,
+        4.556
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        3.994,
+        2.706,
+        6.094,
+        4.806
+      ]
+    },
+    {
+      "ref": "TP15",
+      "net": "P2.10{slash}D13",
+      "center_mm": [
+        -5.126,
+        3.7577
+      ],
+      "bounds_mm": [
+        -5.926,
+        2.9577,
+        -4.326,
+        4.5577
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -6.176,
+        2.7077,
+        -4.076,
+        4.8077
+      ]
+    },
+    {
+      "ref": "TP16",
+      "net": "P2.09{slash}D14",
+      "center_mm": [
+        -5.016,
+        1.2677
+      ],
+      "bounds_mm": [
+        -5.816,
+        0.4677,
+        -4.216,
+        2.0677
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -6.066,
+        0.2177,
+        -3.966,
+        2.3177
+      ]
+    },
+    {
+      "ref": "TP17",
+      "net": "P2.06{slash}D15",
+      "center_mm": [
+        -5.116,
+        -1.3223
+      ],
+      "bounds_mm": [
+        -5.916,
+        -2.1223,
+        -4.316,
+        -0.5223
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -6.166,
+        -2.3723,
+        -4.066,
+        -0.2723
+      ]
+    },
+    {
+      "ref": "TP18",
+      "net": "P2.00{slash}USR_LED",
+      "center_mm": [
+        -5.046,
+        -3.8623
+      ],
+      "bounds_mm": [
+        -5.846,
+        -4.6623,
+        -4.246,
+        -3.0623
+      ],
+      "shape": "circle",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -6.096,
+        -4.9123,
+        -3.996,
+        -2.8123
+      ]
+    },
+    {
+      "ref": "TP19",
+      "net": "P1.02{slash}NFC1",
+      "center_mm": [
+        -4.276,
+        9.2477
+      ],
+      "bounds_mm": [
+        -4.784,
+        8.2317,
+        -3.768,
+        10.2637
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -5.034,
+        7.9817,
+        -3.518,
+        10.5137
+      ]
+    },
+    {
+      "ref": "TP2",
+      "net": "nRF54_SWDIO",
+      "center_mm": [
+        -1.236,
+        -8.7023
+      ],
+      "bounds_mm": [
+        -1.8075,
+        -9.2738,
+        -0.6645,
+        -8.1308
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -2.0575,
+        -9.5238,
+        -0.4145,
+        -7.8808
+      ]
+    },
+    {
+      "ref": "TP20",
+      "net": "P1.03{slash}NFC2",
+      "center_mm": [
+        -5.778,
+        9.2477
+      ],
+      "bounds_mm": [
+        -6.286,
+        8.2317,
+        -5.27,
+        10.2637
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -6.536,
+        7.9817,
+        -5.02,
+        10.5137
+      ]
+    },
+    {
+      "ref": "TP3",
+      "net": "GND",
+      "center_mm": [
+        1.294,
+        -6.1523
+      ],
+      "bounds_mm": [
+        0.7225,
+        -6.7238,
+        1.8655,
+        -5.5808
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        0.4725,
+        -6.9738,
+        2.1155,
+        -5.3308
+      ]
+    },
+    {
+      "ref": "TP4",
+      "net": "~{nRF54_RESET}",
+      "center_mm": [
+        -1.236,
+        -6.1623
+      ],
+      "bounds_mm": [
+        -1.8075,
+        -6.7338,
+        -0.6645,
+        -5.5908
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -2.0575,
+        -6.9838,
+        -0.4145,
+        -5.3408
+      ]
+    },
+    {
+      "ref": "TP5",
+      "net": "VSYS_3V3",
+      "center_mm": [
+        1.294,
+        -3.6223
+      ],
+      "bounds_mm": [
+        0.7225,
+        -4.1938,
+        1.8655,
+        -3.0508
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        0.4725,
+        -4.4438,
+        2.1155,
+        -2.8008
+      ]
+    },
+    {
+      "ref": "TP6",
+      "net": "~{SAMD11_RESET}",
+      "center_mm": [
+        -1.236,
+        -3.6223
+      ],
+      "bounds_mm": [
+        -1.8075,
+        -4.1938,
+        -0.6645,
+        -3.0508
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -2.0575,
+        -4.4438,
+        -0.4145,
+        -2.8008
+      ]
+    },
+    {
+      "ref": "TP7",
+      "net": "SAMD11_SWCLK",
+      "center_mm": [
+        1.294,
+        -1.0823
+      ],
+      "bounds_mm": [
+        0.7225,
+        -1.6538,
+        1.8655,
+        -0.5108
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        0.4725,
+        -1.9038,
+        2.1155,
+        -0.2608
+      ]
+    },
+    {
+      "ref": "TP8",
+      "net": "SAMD11_SWDIO",
+      "center_mm": [
+        -1.236,
+        -1.0823
+      ],
+      "bounds_mm": [
+        -1.8075,
+        -1.6538,
+        -0.6645,
+        -0.5108
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -2.0575,
+        -1.9038,
+        -0.4145,
+        -0.2608
+      ]
+    }
+  ],
+  "mechanical_features": [
+    {
+      "ref": "K1",
+      "pad": "",
+      "value": "TD-1183SN-A3N-D1R",
+      "center_mm": [
+        -4.5354,
+        5.3761
+      ],
+      "drill_size_mm": [
+        0.7,
+        0.7
+      ],
+      "kind": "locating bore",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "K2",
+      "pad": "",
+      "value": "TD-1183SN-A3N-D1R",
+      "center_mm": [
+        4.581,
+        5.3761
+      ],
+      "drill_size_mm": [
+        0.7,
+        0.7
+      ],
+      "kind": "locating bore",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "",
+      "value": "USB2.0 Type C",
+      "center_mm": [
+        2.934,
+        -6.5723
+      ],
+      "drill_size_mm": [
+        0.65,
+        0.65
+      ],
+      "kind": "locating bore",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "",
+      "value": "USB2.0 Type C",
+      "center_mm": [
+        -2.846,
+        -6.5723
+      ],
+      "drill_size_mm": [
+        0.65,
+        0.65
+      ],
+      "kind": "locating bore",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "S1",
+      "value": "USB2.0 Type C",
+      "center_mm": [
+        4.364,
+        -10.0723
+      ],
+      "drill_size_mm": [
+        0.6,
+        1.5
+      ],
+      "kind": "USB shell anchor",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "S2",
+      "value": "USB2.0 Type C",
+      "center_mm": [
+        -4.276,
+        -10.0723
+      ],
+      "drill_size_mm": [
+        0.6,
+        1.5
+      ],
+      "kind": "USB shell anchor",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    }
+  ],
+  "antenna_envelopes": [
+    {
+      "name": "ANT1 fab",
+      "bounds_mm": [
+        1.0696,
+        8.1827,
+        6.3696,
+        10.2827
+      ],
+      "method": "Union of vendor PCB footprint fab graphics, including strokes"
+    },
+    {
+      "name": "ANT1 courtyard",
+      "bounds_mm": [
+        1.0946,
+        8.2327,
+        6.3446,
+        10.2827
+      ],
+      "method": "Union of vendor PCB footprint courtyard graphics, including strokes"
+    }
+  ],
+  "keepouts": [
+    {
+      "name": "unused-TP1",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          0.4725,
+          -9.5138
+        ],
+        [
+          2.1155,
+          -9.5138
+        ],
+        [
+          2.1155,
+          -7.8708
+        ],
+        [
+          0.4725,
+          -7.8708
+        ]
+      ],
+      "source_contact": "TP1"
+    },
+    {
+      "name": "unused-TP11",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          3.994,
+          -4.9123
+        ],
+        [
+          6.094,
+          -4.9123
+        ],
+        [
+          6.094,
+          -2.8123
+        ],
+        [
+          3.994,
+          -2.8123
+        ]
+      ],
+      "source_contact": "TP11"
+    },
+    {
+      "name": "unused-TP12",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          3.994,
+          -2.3723
+        ],
+        [
+          6.094,
+          -2.3723
+        ],
+        [
+          6.094,
+          -0.2723
+        ],
+        [
+          3.994,
+          -0.2723
+        ]
+      ],
+      "source_contact": "TP12"
+    },
+    {
+      "name": "unused-TP13",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          3.994,
+          0.1677
+        ],
+        [
+          6.094,
+          0.1677
+        ],
+        [
+          6.094,
+          2.2677
+        ],
+        [
+          3.994,
+          2.2677
+        ]
+      ],
+      "source_contact": "TP13"
+    },
+    {
+      "name": "unused-TP14",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          3.994,
+          2.706
+        ],
+        [
+          6.094,
+          2.706
+        ],
+        [
+          6.094,
+          4.806
+        ],
+        [
+          3.994,
+          4.806
+        ]
+      ],
+      "source_contact": "TP14"
+    },
+    {
+      "name": "unused-TP15",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.176,
+          2.7077
+        ],
+        [
+          -4.076,
+          2.7077
+        ],
+        [
+          -4.076,
+          4.8077
+        ],
+        [
+          -6.176,
+          4.8077
+        ]
+      ],
+      "source_contact": "TP15"
+    },
+    {
+      "name": "unused-TP16",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.066,
+          0.2177
+        ],
+        [
+          -3.966,
+          0.2177
+        ],
+        [
+          -3.966,
+          2.3177
+        ],
+        [
+          -6.066,
+          2.3177
+        ]
+      ],
+      "source_contact": "TP16"
+    },
+    {
+      "name": "unused-TP17",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.166,
+          -2.3723
+        ],
+        [
+          -4.066,
+          -2.3723
+        ],
+        [
+          -4.066,
+          -0.2723
+        ],
+        [
+          -6.166,
+          -0.2723
+        ]
+      ],
+      "source_contact": "TP17"
+    },
+    {
+      "name": "unused-TP18",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.096,
+          -4.9123
+        ],
+        [
+          -3.996,
+          -4.9123
+        ],
+        [
+          -3.996,
+          -2.8123
+        ],
+        [
+          -6.096,
+          -2.8123
+        ]
+      ],
+      "source_contact": "TP18"
+    },
+    {
+      "name": "unused-TP19",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -5.034,
+          7.9817
+        ],
+        [
+          -3.518,
+          7.9817
+        ],
+        [
+          -3.518,
+          10.5137
+        ],
+        [
+          -5.034,
+          10.5137
+        ]
+      ],
+      "source_contact": "TP19"
+    },
+    {
+      "name": "unused-TP2",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -2.0575,
+          -9.5238
+        ],
+        [
+          -0.4145,
+          -9.5238
+        ],
+        [
+          -0.4145,
+          -7.8808
+        ],
+        [
+          -2.0575,
+          -7.8808
+        ]
+      ],
+      "source_contact": "TP2"
+    },
+    {
+      "name": "unused-TP20",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.536,
+          7.9817
+        ],
+        [
+          -5.02,
+          7.9817
+        ],
+        [
+          -5.02,
+          10.5137
+        ],
+        [
+          -6.536,
+          10.5137
+        ]
+      ],
+      "source_contact": "TP20"
+    },
+    {
+      "name": "unused-TP3",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          0.4725,
+          -6.9738
+        ],
+        [
+          2.1155,
+          -6.9738
+        ],
+        [
+          2.1155,
+          -5.3308
+        ],
+        [
+          0.4725,
+          -5.3308
+        ]
+      ],
+      "source_contact": "TP3"
+    },
+    {
+      "name": "unused-TP4",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -2.0575,
+          -6.9838
+        ],
+        [
+          -0.4145,
+          -6.9838
+        ],
+        [
+          -0.4145,
+          -5.3408
+        ],
+        [
+          -2.0575,
+          -5.3408
+        ]
+      ],
+      "source_contact": "TP4"
+    },
+    {
+      "name": "unused-TP5",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          0.4725,
+          -4.4438
+        ],
+        [
+          2.1155,
+          -4.4438
+        ],
+        [
+          2.1155,
+          -2.8008
+        ],
+        [
+          0.4725,
+          -2.8008
+        ]
+      ],
+      "source_contact": "TP5"
+    },
+    {
+      "name": "unused-TP6",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -2.0575,
+          -4.4438
+        ],
+        [
+          -0.4145,
+          -4.4438
+        ],
+        [
+          -0.4145,
+          -2.8008
+        ],
+        [
+          -2.0575,
+          -2.8008
+        ]
+      ],
+      "source_contact": "TP6"
+    },
+    {
+      "name": "unused-TP7",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          0.4725,
+          -1.9038
+        ],
+        [
+          2.1155,
+          -1.9038
+        ],
+        [
+          2.1155,
+          -0.2608
+        ],
+        [
+          0.4725,
+          -0.2608
+        ]
+      ],
+      "source_contact": "TP7"
+    },
+    {
+      "name": "unused-TP8",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -2.0575,
+          -1.9038
+        ],
+        [
+          -0.4145,
+          -1.9038
+        ],
+        [
+          -0.4145,
+          -0.2608
+        ],
+        [
+          -2.0575,
+          -0.2608
+        ]
+      ],
+      "source_contact": "TP8"
+    },
+    {
+      "name": "antenna-and-NFC",
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.55,
+          7.9
+        ],
+        [
+          6.55,
+          7.9
+        ],
+        [
+          6.55,
+          13.5
+        ],
+        [
+          -6.55,
+          13.5
+        ]
+      ],
+      "rear_extension_beyond_nominal_module_mm": 3.0225,
+      "note": "Contains full ANT1 body/courtyard and underside NFC contacts; outer D6/D7 lands start at abs(x)=6.7075."
+    }
+  ],
+  "assembly_notes": [
+    "Use only a bare standard module with no soldered male headers.",
+    "Only the 14 edge connections and this MCU battery pair are carrier lands; all other underside contacts have no carrier paste/copper.",
+    "No populated underside IC/passive is present in vendor PCB; USB anchors and locating bores require actual-module flatness inspection.",
+    "No hardware assembly, reflow profile qualification, RF test, charging test or current measurement has been performed."
+  ],
+  "model": {
+    "type": "bare-module-pcb",
+    "path": "3dmodels/XIAO_nRF54L15_bare_vendor_PCB.step",
+    "source_url": "https://files.seeedstudio.com/wiki/XIAO_nRF54L15/Getting_Start/nRF54L15_KICAD.zip",
+    "source_pcb_sha256": "c5d076c78378cedc2037873068e48ef9f81504e414bdea26183e06a1bf4b512f",
+    "sha256": "3a9be6f5bfeccfefe6e2b9dd8337ce5d9c979a27382fde1fef2f2ad9cde510dd",
+    "origin": "Physical module header-grid center, USB-up; STEP Cartesian +Y points toward USB",
+    "offset_mm": [
+      0.0,
+      0.0,
+      0.1
+    ],
+    "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "nominal_solder_gap_mm": 0.1,
+    "source_pcb_nominal_thickness_mm": 1.6,
+    "exported_dielectric_core_thickness_mm": 1.51,
+    "generator": "Installed KiCad 10.0.6 pcb export step --board-only, rotated vendor PCB +90 degrees around source_header_origin_mm before export --user-origin",
+    "omitted_solids": [
+      "All ICs and passives",
+      "Antenna",
+      "USB connector",
+      "Switches",
+      "Shield",
+      "Outer copper and soldermask layers"
+    ],
+    "note": "Exact vendor PCB outline and drilled holes only. This is not an assembled module solid or a certified collision/flatness model; 0.1 mm solder gap is a nominal visualization value.",
+    "exported_solid_vertex_z_bounds_mm": [
+      0.0,
+      1.51
+    ]
+  },
+  "probe_access": [
+    {
+      "ref": "H3",
+      "signal": "SWDIO",
+      "source_contact": "TP2",
+      "center_mm": [
+        -1.236,
+        -8.7023
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    },
+    {
+      "ref": "H4",
+      "signal": "SWCLK",
+      "source_contact": "TP1",
+      "center_mm": [
+        1.294,
+        -8.6923
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    },
+    {
+      "ref": "H5",
+      "signal": "RESET",
+      "source_contact": "TP4",
+      "center_mm": [
+        -1.236,
+        -6.1623
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    },
+    {
+      "ref": "H6",
+      "signal": "GND",
+      "source_contact": "TP3",
+      "center_mm": [
+        1.294,
+        -6.1523
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    }
+  ]
+}

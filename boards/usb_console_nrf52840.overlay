@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Native USB CDC uses the SDK board's CDC ACM child, not D6/D7 UART. */
+/ {
+	chosen {
+		zephyr,console = &board_cdc_acm_uart;
+		zephyr,shell-uart = &board_cdc_acm_uart;
+	};
+};
+&usbd { status = "okay"; };
+&uart0 { status = "disabled"; };
+&gpio0 {
+	/* Preserve the boot-stage LED through GPIO hog initialization. */
+	/delete-node/ rgb_off;
+};

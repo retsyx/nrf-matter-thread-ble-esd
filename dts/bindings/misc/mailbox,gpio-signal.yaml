@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+description: GPIO signal used directly by the mailbox application.
+compatible: "mailbox,gpio-signal"
+include: base.yaml
+properties:
+  gpios:
+    type: phandle-array
+    required: true

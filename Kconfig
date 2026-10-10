@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+mainmenu "XIAO Nordic Matter mailbox sensor"
+
+# Nonblocking RTT when it is the selected backend. A choice default avoids
+# assigning a disabled RTT choice in UART console builds.
+if LOG_BACKEND_RTT
+choice LOG_BACKEND_RTT_MODE
+    default LOG_BACKEND_RTT_MODE_DROP
+endchoice
+endif
+
+config MAILBOX_BATTERY_INSTALLED
+    bool "A rechargeable LiPo battery is fitted"
+    default n
+    select ADC
+    help
+      Explicit opt-in. Charger voltage alone does not prove a battery is fitted.
+
+config MAILBOX_RF_SWITCH_POWER_CONTROL
+    bool "Power the XIAO antenna switch only during radio activity"
+    depends on $(dt_nodelabel_enabled,mailbox_rf_power)
+    depends on MPSL
+    default y
+    help
+      Use MPSL ACTIVE/INACTIVE notifications to power the antenna switch
+      for complete radio events, including Thread and Bluetooth activity.
+      If registration fails, leave the switch powered so the radio works.
+      Disabling this option keeps the antenna switch powered continuously.
+
+config MAILBOX_BOOT_DIAGNOSTICS
+    bool "Trace nRF52840 startup in USB diagnostic builds"
+    depends on SOC_NRF52840 && USB_DEVICE_STACK
+    default n
+    help
+      Diagnostic USB builds can show how far initialization progressed before
+      main() or USB output is available. Direct RGB writes mark early startup;
+      numbered pulse groups and bounded pauses trace application initialization.
+      Leave disabled for normal battery-powered operation.
+
+if OPENTHREAD
+choice OPENTHREAD_NORDIC_LIBRARY_CONFIGURATION
+    default OPENTHREAD_NORDIC_LIBRARY_MTD
+endchoice
+choice OPENTHREAD_DEVICE_TYPE
+    default OPENTHREAD_MTD
+endchoice
+endif
+source "${ZEPHYR_CONNECTEDHOMEIP_MODULE_DIR}/config/nrfconnect/chip-module/Kconfig.features"
+source "${ZEPHYR_CONNECTEDHOMEIP_MODULE_DIR}/config/nrfconnect/chip-module/Kconfig.defaults"
+source "${ZEPHYR_NRF_MODULE_DIR}/samples/matter/common/src/Kconfig"
+source "Kconfig.zephyr"

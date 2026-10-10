@@ -1,0 +1,122 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+#include <zephyr/dt-bindings/adc/adc.h>
+#include <zephyr/dt-bindings/adc/nrf-saadc.h>
+#include <zephyr/dt-bindings/i2c/i2c.h>
+
+/* Use the SDK's XIAO board hardware description, with project-specific
+ * peripheral power control and a direct-flash application layout.
+ */
+/ {
+	chosen {
+		zephyr,code-partition = &slot0_partition;
+	};
+	aliases {
+		mailbox-motion = &mailbox_motion;
+		mailbox-battery = &mailbox_battery;
+	};
+	mailbox_motion: mailbox-motion {
+		compatible = "mailbox,gpio-signal";
+		gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>; /* D2, BMA400 INT1 */
+	};
+	mailbox_rf_power: mailbox-rf-power {
+		compatible = "mailbox,gpio-signal";
+		gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
+	};
+	mailbox_battery: mailbox-battery {
+		compatible = "voltage-divider";
+		io-channels = <&adc 7>;
+		output-ohms = <10000>;
+		full-ohms = <20000>;
+		power-gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
+		power-on-sample-delay-us = <2000>;
+	};
+};
+
+/* The SDK board enables the Sense peripherals and battery power regulator.
+ * This application uses an external BMA400 and controls those power pins with
+ * the GPIO hogs below (or temporarily from the battery monitor). Radio power
+ * control owns P2.03; retain rfsw_ctl to hold P2.05 low for the internal antenna.
+ */
+&pdm_imu_pwr { status = "disabled"; };
+&vbat_pwr { status = "disabled"; };
+&rfsw_pwr { status = "disabled"; };
+&imu_power_default_on { status = "disabled"; };
+&lsm6ds3tr_c { status = "disabled"; };
+&i2c30 { status = "disabled"; };
+&pdm20 { status = "disabled"; };
+&spi00 { status = "disabled"; };
+&nfct { status = "disabled"; };
+&uart20 { status = "disabled"; };
+&uart21 { status = "disabled"; };
+
+/* Replace the SDK's MCUboot/dual-slot layout. SAMD11 debug firmware runs on
+ * a separate MCU; reserve the final 52 KiB for Matter/OpenThread settings.
+ */
+&cpuapp_rram {
+	/delete-node/ partitions;
+	partitions {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		slot0_partition: partition@0 {
+			compatible = "zephyr,mapped-partition";
+			label = "image-0";
+			reg = <0x0 0x170000>;
+		};
+		storage_partition: partition@170000 {
+			compatible = "zephyr,mapped-partition";
+			label = "storage";
+			reg = <0x170000 0xd000>;
+		};
+	};
+};
+
+&i2c22 {
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+	zephyr,pm-device-runtime-auto;
+	status = "okay";
+	mailbox_bma400: bma400@14 {
+		compatible = "bosch,bma400";
+		reg = <0x14>;
+	};
+};
+
+&adc {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	channel@7 {
+		reg = <7>;
+		zephyr,gain = "ADC_GAIN_1_4";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,input-positive = <NRF_SAADC_AIN7>;
+		zephyr,resolution = <12>;
+		zephyr,oversampling = <0>;
+	};
+};
+
+&gpio0 {
+	sense_power_off {
+		gpio-hog;
+		gpios = <1 GPIO_ACTIVE_HIGH>;
+		output-low;
+		line-name = "Unused Sense IMU and microphone off";
+	};
+};
+&gpio1 {
+	/* INT1 uses low-power GPIO SENSE/PORT events instead of an IN channel. */
+	sense-edge-mask = <0x40>;
+	battery_divider_off {
+		gpio-hog;
+		gpios = <15 GPIO_ACTIVE_HIGH>;
+		output-low;
+		line-name = "Battery divider off until sampled";
+	};
+};
+&gpio2 {
+	user_led_off {
+		gpio-hog;
+		gpios = <0 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "User LED off";
+	};
+};

@@ -1,0 +1,7 @@
+(footprint "ProbeAccess_Hole_1.5mm" (version 20240108) (generator "pcbnew") (layer "F.Cu")
+(property "Reference" "REF**" (at 0 -2 0) (layer "F.SilkS") (effects (font (size .8 .8) (thickness .12))))
+(property "Value" "SWD probe access" (at 0 0 0) (layer "F.Fab") (effects (font (size .8 .8) (thickness .12))))
+(attr board_only exclude_from_pos_files exclude_from_bom)
+(pad "" np_thru_hole circle (at 0 0) (size 1.5 1.5) (drill 1.5) (layers "F.Mask" "B.Mask"))
+
+)

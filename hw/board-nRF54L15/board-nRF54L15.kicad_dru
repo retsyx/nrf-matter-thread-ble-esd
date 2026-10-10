@@ -1,0 +1,15 @@
+(version 1)
+
+# H3-H6 are intentional bottom-side pogo access to the mounted XIAO's MCU
+# SWDIO, SWCLK, RESET and GND contacts. They have one 1.5 mm mask-only NPTH
+# each, no copper and no courtyard; geometry.json and audit.py verify this.
+# KiCad's courtyard provider uses courtyard_clearance for pad-hole collisions.
+# Limit the exception to these exact footprint pairs on the module's front
+# side. Other courtyard pairs, copper clearances and hole rules stay active.
+# https://docs.kicad.org/10.0/en/pcbnew/pcbnew.html#custom-design-rules
+# https://docs.kicad.org/doxygen/drc__test__provider__courtyard__clearance_8cpp_source.html
+(rule "Intentional XIAO MCU probe access inside U1 front courtyard"
+    (layer "F.Cu")
+    (condition "A.Type == 'Footprint' && A.Reference == 'U1' && A.Library_Link == 'Board:XIAO_nRF54L15_SMD' && B.Type == 'Footprint' && B.Library_Link == 'Board:ProbeAccess_Hole_1.5mm' && (B.Reference == 'H3' || B.Reference == 'H4' || B.Reference == 'H5' || B.Reference == 'H6')")
+    (constraint courtyard_clearance (min 0mm))
+    (severity ignore))

@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+description: GPIO wiring for sending the unused onboard SPI flash to deep power down.
+compatible: "mailbox,spi-flash-sleep"
+include: base.yaml
+properties:
+  cs-gpios:
+    type: phandle-array
+    required: true
+  sck-gpios:
+    type: phandle-array
+    required: true
+  mosi-gpios:
+    type: phandle-array
+    required: true
+  miso-gpios:
+    type: phandle-array
+    required: true
+  wp-gpios:
+    type: phandle-array
+    required: true
+  hold-gpios:
+    type: phandle-array
+    required: true

@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
+description: Bosch BMA400 connected over I2C, controlled by the application's SensorAPI.
+compatible: "bosch,bma400"
+include: i2c-device.yaml

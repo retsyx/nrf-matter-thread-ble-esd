@@ -1,0 +1,11 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* UART20 P1.09 TX / P1.08 RX connects to the on-board SAMD11 USB bridge.
+ * D6/D7 expose a different UART (UART21), and are not this console.
+ */
+/ {
+	chosen {
+		zephyr,console = &uart20;
+		zephyr,shell-uart = &uart20;
+	};
+};
+&uart20 { status = "okay"; };

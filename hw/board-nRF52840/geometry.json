@@ -1,0 +1,831 @@
+{
+  "schema_version": 1,
+  "board": "board-nRF52840",
+  "footprint": "XIAO_nRF52840_SMD",
+  "coordinate_frame": "USB-up top view; origin at physical module through-hole header-grid center; +Y toward antenna; all geometry local mm",
+  "module": {
+    "name": "Seeed Studio XIAO nRF52840",
+    "pcb_size_mm": [
+      17.78,
+      20.955
+    ],
+    "source_url": "https://files.seeedstudio.com/wiki/XIAO-BLE/Res/260828_Seeed_Studio_XIAO_nRF52840_v1.2.zip",
+    "vendor_pcb": "Seeed Studio XIAO nRF52840 v1.2.kicad_pcb",
+    "source_header_origin_mm": [
+      148.5011,
+      105.0036
+    ],
+    "placement": {
+      "x_mm": 64.0,
+      "y_mm": 60.5,
+      "rotation_deg": 0
+    },
+    "source_board_thickness_mm": 1.6,
+    "pcb_bounds_mm": [
+      -8.89,
+      -10.4775,
+      8.89,
+      10.4775
+    ]
+  },
+  "edge_land_basis": "2.75x2.0mm SMD lands at x=+/-8.0825 from supplied Seeed nRF54L15 footprint; nRF52840 supplied lands differ only by 0.0275mm common X shift.",
+  "edge_lands": [
+    {
+      "pad": "1",
+      "net_role": "D0",
+      "center_mm": [
+        -8.0825,
+        -7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "2",
+      "net_role": "D1",
+      "center_mm": [
+        -8.0825,
+        -5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "3",
+      "net_role": "D2",
+      "center_mm": [
+        -8.0825,
+        -2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "4",
+      "net_role": "D3",
+      "center_mm": [
+        -8.0825,
+        0.0
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "5",
+      "net_role": "D4",
+      "center_mm": [
+        -8.0825,
+        2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "6",
+      "net_role": "D5",
+      "center_mm": [
+        -8.0825,
+        5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "7",
+      "net_role": "D6",
+      "center_mm": [
+        -8.0825,
+        7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "8",
+      "net_role": "D7",
+      "center_mm": [
+        8.0825,
+        7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "9",
+      "net_role": "D8",
+      "center_mm": [
+        8.0825,
+        5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "10",
+      "net_role": "D9",
+      "center_mm": [
+        8.0825,
+        2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "11",
+      "net_role": "D10",
+      "center_mm": [
+        8.0825,
+        0.0
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "12",
+      "net_role": "3V3",
+      "center_mm": [
+        8.0825,
+        -2.54
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "13",
+      "net_role": "GND",
+      "center_mm": [
+        8.0825,
+        -5.08
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    },
+    {
+      "pad": "14",
+      "net_role": "VBUS",
+      "center_mm": [
+        8.0825,
+        -7.62
+      ],
+      "size_mm": [
+        2.75,
+        2.0
+      ]
+    }
+  ],
+  "battery_lands": [
+    {
+      "pad": "19",
+      "net_role": "VBAT",
+      "vendor_reference": "BAT0",
+      "center_mm": [
+        -4.445,
+        -0.3175
+      ],
+      "size_mm": [
+        2.032,
+        1.016
+      ],
+      "shape": "roundrect",
+      "roundrect_rratio": 0.25
+    },
+    {
+      "pad": "20",
+      "net_role": "GND",
+      "vendor_reference": "GND0",
+      "center_mm": [
+        -4.445,
+        -2.2225
+      ],
+      "size_mm": [
+        2.032,
+        1.016
+      ],
+      "shape": "roundrect",
+      "roundrect_rratio": 0.25
+    }
+  ],
+  "unused_contacts": [
+    {
+      "ref": "NFC1",
+      "net": "/02 XIAO Header & nRF52840/P0.10{slash}NFC2",
+      "center_mm": [
+        5.715,
+        9.2075
+      ],
+      "bounds_mm": [
+        5.207,
+        8.1915,
+        6.223,
+        10.2235
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        4.957,
+        7.9415,
+        6.473,
+        10.4735
+      ]
+    },
+    {
+      "ref": "NFC2",
+      "net": "/02 XIAO Header & nRF52840/P0.09{slash}NFC1",
+      "center_mm": [
+        3.81,
+        9.2075
+      ],
+      "bounds_mm": [
+        3.302,
+        8.1915,
+        4.318,
+        10.2235
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        3.052,
+        7.9415,
+        4.568,
+        10.4735
+      ]
+    },
+    {
+      "ref": "TP1",
+      "net": "GND",
+      "center_mm": [
+        1.27,
+        -6.0325
+      ],
+      "bounds_mm": [
+        0.6985,
+        -6.604,
+        1.8415,
+        -5.461
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        0.4485,
+        -6.854,
+        2.0915,
+        -5.211
+      ]
+    },
+    {
+      "ref": "TP2",
+      "net": "/02 XIAO Header & nRF52840/RESET",
+      "center_mm": [
+        -1.27,
+        -6.0325
+      ],
+      "bounds_mm": [
+        -1.8415,
+        -6.604,
+        -0.6985,
+        -5.461
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -2.0915,
+        -6.854,
+        -0.4485,
+        -5.211
+      ]
+    },
+    {
+      "ref": "TP3",
+      "net": "/02 XIAO Header & nRF52840/SWDCLK",
+      "center_mm": [
+        1.27,
+        -8.5725
+      ],
+      "bounds_mm": [
+        0.6985,
+        -9.144,
+        1.8415,
+        -8.001
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        0.4485,
+        -9.394,
+        2.0915,
+        -7.751
+      ]
+    },
+    {
+      "ref": "TP5",
+      "net": "/02 XIAO Header & nRF52840/SWDIO",
+      "center_mm": [
+        -1.27,
+        -8.5725
+      ],
+      "bounds_mm": [
+        -1.8415,
+        -9.144,
+        -0.6985,
+        -8.001
+      ],
+      "shape": "roundrect",
+      "keepout_margin_mm": 0.25,
+      "keepout_bounds_mm": [
+        -2.0915,
+        -9.394,
+        -0.4485,
+        -7.751
+      ]
+    }
+  ],
+  "mechanical_features": [
+    {
+      "ref": "USB1",
+      "pad": "",
+      "value": "USB2.0-TYPE-C",
+      "center_mm": [
+        2.89,
+        -5.7355
+      ],
+      "drill_size_mm": [
+        0.6,
+        0.6
+      ],
+      "kind": "locating bore",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "",
+      "value": "USB2.0-TYPE-C",
+      "center_mm": [
+        -2.89,
+        -5.7355
+      ],
+      "drill_size_mm": [
+        0.6,
+        0.6
+      ],
+      "kind": "locating bore",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "S1",
+      "value": "USB2.0-TYPE-C",
+      "center_mm": [
+        4.3,
+        -9.3855
+      ],
+      "drill_size_mm": [
+        0.508,
+        0.508
+      ],
+      "kind": "USB shell anchor",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "S2",
+      "value": "USB2.0-TYPE-C",
+      "center_mm": [
+        -4.3,
+        -9.3855
+      ],
+      "drill_size_mm": [
+        0.508,
+        0.508
+      ],
+      "kind": "USB shell anchor",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "S3",
+      "value": "USB2.0-TYPE-C",
+      "center_mm": [
+        4.3,
+        -5.1855
+      ],
+      "drill_size_mm": [
+        0.508,
+        0.508
+      ],
+      "kind": "USB shell anchor",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    },
+    {
+      "ref": "USB1",
+      "pad": "S4",
+      "value": "USB2.0-TYPE-C",
+      "center_mm": [
+        -4.3,
+        -5.1855
+      ],
+      "drill_size_mm": [
+        0.508,
+        0.508
+      ],
+      "kind": "USB shell anchor",
+      "note": "Carrier relief is not prescribed from this 2D data; inspect physical protrusion/flatness before reflow."
+    }
+  ],
+  "antenna_envelopes": [
+    {
+      "name": "ANT1 nominal AN3216 body",
+      "bounds_mm": [
+        -3.398325,
+        8.605621,
+        -0.198325,
+        10.205621
+      ],
+      "method": "3.2x1.6mm package inferred from vendor ANTENNA-AN3216 identification"
+    },
+    {
+      "name": "ANT1 courtyard",
+      "bounds_mm": [
+        -3.449325,
+        8.643621,
+        -0.147325,
+        10.167621
+      ],
+      "method": "Union of vendor PCB footprint courtyard graphics, including strokes"
+    }
+  ],
+  "keepouts": [
+    {
+      "name": "unused-NFC1",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          4.957,
+          7.9415
+        ],
+        [
+          6.473,
+          7.9415
+        ],
+        [
+          6.473,
+          10.4735
+        ],
+        [
+          4.957,
+          10.4735
+        ]
+      ],
+      "source_contact": "NFC1"
+    },
+    {
+      "name": "unused-NFC2",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          3.052,
+          7.9415
+        ],
+        [
+          4.568,
+          7.9415
+        ],
+        [
+          4.568,
+          10.4735
+        ],
+        [
+          3.052,
+          10.4735
+        ]
+      ],
+      "source_contact": "NFC2"
+    },
+    {
+      "name": "unused-TP1",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          0.4485,
+          -6.854
+        ],
+        [
+          2.0915,
+          -6.854
+        ],
+        [
+          2.0915,
+          -5.211
+        ],
+        [
+          0.4485,
+          -5.211
+        ]
+      ],
+      "source_contact": "TP1"
+    },
+    {
+      "name": "unused-TP2",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -2.0915,
+          -6.854
+        ],
+        [
+          -0.4485,
+          -6.854
+        ],
+        [
+          -0.4485,
+          -5.211
+        ],
+        [
+          -2.0915,
+          -5.211
+        ]
+      ],
+      "source_contact": "TP2"
+    },
+    {
+      "name": "unused-TP3",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          0.4485,
+          -9.394
+        ],
+        [
+          2.0915,
+          -9.394
+        ],
+        [
+          2.0915,
+          -7.751
+        ],
+        [
+          0.4485,
+          -7.751
+        ]
+      ],
+      "source_contact": "TP3"
+    },
+    {
+      "name": "unused-TP5",
+      "layers": [
+        "F.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -2.0915,
+          -9.394
+        ],
+        [
+          -0.4485,
+          -9.394
+        ],
+        [
+          -0.4485,
+          -7.751
+        ],
+        [
+          -2.0915,
+          -7.751
+        ]
+      ],
+      "source_contact": "TP5"
+    },
+    {
+      "name": "antenna-and-NFC",
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "pads",
+        "zone_fills"
+      ],
+      "polygon_mm": [
+        [
+          -6.55,
+          7.9
+        ],
+        [
+          6.55,
+          7.9
+        ],
+        [
+          6.55,
+          13.5
+        ],
+        [
+          -6.55,
+          13.5
+        ]
+      ],
+      "rear_extension_beyond_nominal_module_mm": 3.0225,
+      "note": "Contains full ANT1 body/courtyard and underside NFC contacts; outer D6/D7 lands start at abs(x)=6.7075."
+    }
+  ],
+  "assembly_notes": [
+    "Use only a bare standard module with no soldered male headers.",
+    "Only the 14 edge connections and this MCU battery pair are carrier lands; all other underside contacts have no carrier paste/copper.",
+    "No populated underside IC/passive is present in vendor PCB; USB anchors and locating bores require actual-module flatness inspection.",
+    "No hardware assembly, reflow profile qualification, RF test, charging test or current measurement has been performed."
+  ],
+  "model": {
+    "type": "bare-module-pcb",
+    "path": "3dmodels/XIAO_nRF52840_bare_vendor_PCB.step",
+    "source_url": "https://files.seeedstudio.com/wiki/XIAO-BLE/Res/260828_Seeed_Studio_XIAO_nRF52840_v1.2.zip",
+    "source_pcb_sha256": "4d0a45f2427ba6750d1017441a266375ef59ea2088825e4dc96eeb507a75e167",
+    "sha256": "42b62bb70005c717e8be41a96e956a8bda7314805db9aac1117c66537a5eb4db",
+    "origin": "Physical module header-grid center, USB-up; STEP Cartesian +Y points toward USB",
+    "offset_mm": [
+      0.0,
+      0.0,
+      0.1
+    ],
+    "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "nominal_solder_gap_mm": 0.1,
+    "source_pcb_nominal_thickness_mm": 1.6,
+    "exported_dielectric_core_thickness_mm": 1.51,
+    "generator": "Installed KiCad 10.0.6 pcb export step --board-only, rotated vendor PCB +90 degrees around source_header_origin_mm before export --user-origin",
+    "omitted_solids": [
+      "All ICs and passives",
+      "Antenna",
+      "USB connector",
+      "Switches",
+      "Shield",
+      "Outer copper and soldermask layers"
+    ],
+    "note": "Exact vendor PCB outline and drilled holes only. This is not an assembled module solid or a certified collision/flatness model; 0.1 mm solder gap is a nominal visualization value.",
+    "exported_solid_vertex_z_bounds_mm": [
+      0.0,
+      1.51
+    ]
+  },
+  "probe_access": [
+    {
+      "ref": "H3",
+      "signal": "SWDIO",
+      "source_contact": "TP5",
+      "center_mm": [
+        -1.27,
+        -8.5725
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    },
+    {
+      "ref": "H4",
+      "signal": "SWCLK",
+      "source_contact": "TP3",
+      "center_mm": [
+        1.27,
+        -8.5725
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    },
+    {
+      "ref": "H5",
+      "signal": "RESET",
+      "source_contact": "TP2",
+      "center_mm": [
+        -1.27,
+        -6.0325
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    },
+    {
+      "ref": "H6",
+      "signal": "GND",
+      "source_contact": "TP1",
+      "center_mm": [
+        1.27,
+        -6.0325
+      ],
+      "drill_diameter_mm": 1.5,
+      "module_contact_diameter_mm": 1.143,
+      "suggested_probe_tip_diameter_mm": 0.6,
+      "layers": [
+        "F.Mask",
+        "B.Mask"
+      ],
+      "copper": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true
+    }
+  ]
+}

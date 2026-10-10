@@ -1,0 +1,56 @@
+# Local OS, editor and agent state
+.DS_Store
+.vscode/
+.codex/
+
+# Python caches and environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build, generation and flashing output
+/target/
+build/
+build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+cmake_install.cmake
+build.ninja
+.ninja_deps
+.ninja_log
+*.o
+*.a
+*.elf
+*.hex
+*.bin
+*.uf2
+*.map
+managed_components/
+dependencies.lock
+
+# Legacy Matter generation outputs; only the .zap model is versioned
+/src/data_model/zap-generated/
+/src/data_model/mailbox-motion.matter
+/matter_qr.png
+
+# KiCad exports and local editor state
+/hw/board-*/fabrication/
+/hw/board-*/bom.csv
+/hw/board-*/3dmodels/XIAO_*_bare_vendor_PCB.step
+*-backups/
+*.kicad_prl
+*.lck
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*.kicad_pro-bak
+*.gbr
+*.gbrjob
+*.drl
+*.pos
+*.rpt
+
+# Diagnostic logs and power-profiler captures
+*.log
+/ppk-*.csv
