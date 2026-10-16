@@ -17,16 +17,39 @@ Alternatively, you can cobble together your own setup.
 
 ## Downloading and Installing the Firmware
 
-Download the latest released [firmware](https://github.com/retsyx/nrf-matter-thread-ble-esd/releases/latest/download/???). Unzip it.
+Download and unzip the latest released [firmware.zip](https://github.com/retsyx/nrf-matter-thread-ble-esd/releases/latest/download/firmware.zip). It contains firmware for both boards; use the file matching your MCU.
 
 
 ### Installing on the nRF52840
 
-Double press the board's reset button to put the board in bootloader mode and expose a mountable drive. Copy the firmware `.uf2` file appropriate to your MCU on to the drive. The firmware will immediately start when the copy completes.
+Connect the board by USB and double press its reset button to enter bootloader mode and expose a mountable drive. Copy `nrf52840.uf2` onto the drive. The firmware will immediately start when the copy completes.
 
 ### Installing on the nRF54L15
 
-TBD
+The XIAO nRF54L15 has a built-in CMSIS-DAP debugger accessible over USB. Use [pyOCD](https://pyocd.io/docs/installing.html) 0.42 or newer to program the released `nrf54l15.hex`; no external debugger or Nordic SDK is needed.
+
+Install pyOCD in a Python virtual environment (macOS/Linux commands):
+
+```sh
+python3 -m venv .venv-pyocd
+source .venv-pyocd/bin/activate
+python -m pip install --upgrade 'pyocd>=0.42'
+```
+
+On Windows, create the environment with `py -3 -m venv .venv-pyocd`, activate it with `.venv-pyocd\Scripts\Activate.ps1` in PowerShell, then run the same pip command.
+
+On Linux, also install pyOCD's [USB udev rules](https://pyocd.io/docs/installing.html#udev-rules-on-linux) to allow access to the debugger.
+
+Connect the board with a USB data cable. From the directory containing the extracted firmware, run:
+
+```sh
+python -m pyocd list
+python -m pyocd load --target nrf54l --erase sector -O auto_unlock=false nrf54l15.hex
+```
+
+`nrf54l` is pyOCD's built-in target name for the nRF54L15; no device pack is required. If multiple probes are connected, add `--uid PROBE_ID` to the load command, using the XIAO's unique ID from `pyocd list`.
+
+The board resets and starts the firmware after programming. Sector erase updates the application while preserving this firmware's Matter/OpenThread settings; `auto_unlock=false` prevents an automatic full-chip erase if the target is locked. Disconnect USB and power-cycle the board before measuring battery consumption.
 
 ## Building
 
@@ -92,6 +115,12 @@ Alternatively, the environment variables
 
 * `--console` enables the UART shell and Thread CLI for diagnostics.
 * `--battery` explicitly declares that a rechargeable LiPo is fitted; otherwise battery voltage/percentage remain unknown, even if USB produces charger voltage.
+
+### CI and Releases
+
+GitHub Actions runs the driver tests and builds both MCU variants on every branch push and pull request, or when started manually. Builds use the default profile with USB and console disabled. Download each board's firmware from the workflow run's artifacts.
+
+Pushing a `v*` tag builds both variants and publishes a GitHub release with `firmware.zip` and a `SHA256SUMS` file for the archive. The ZIP includes HEX/ELF files for both boards, the nRF52840 UF2, installation instructions, version/build information, and checksums. Tags containing a hyphen, such as `v1.1.0-rc.1`, create prereleases. Update `VERSION` before tagging when changing the firmware version.
 
 ## Matter Commissioning
 

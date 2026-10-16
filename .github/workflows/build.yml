@@ -1,0 +1,81 @@
+name: Build firmware
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Driver tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run driver tests
+        run: python3 scripts/test-driver.py
+
+  build:
+    name: Build ${{ matrix.board }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        board: [nrf52840, nrf54l15]
+    container:
+      # NCS 3.4.1 and its matching Linux toolchain bundle.
+      image: ghcr.io/nrfconnect/sdk-nrf-toolchain:v3.4.1@sha256:45b97cad97a9967c52d77d1d1a0f7dd8fe027edd17c05c3eda2eeadc23729418
+    defaults:
+      run:
+        shell: bash
+    env:
+      NCS_SDK_ROOT: /tmp/ncs
+      NCS_TOOLCHAIN_ROOT: /opt/ncs/toolchains/8285d8ad56
+      BOARD: ${{ matrix.board }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install SDK sources and matching ZAP
+        run: |
+          source /opt/toolchain-env.sh
+          west init -m https://github.com/nrfconnect/sdk-nrf --mr v3.4.1 -o=--depth=1 "$NCS_SDK_ROOT"
+          cd "$NCS_SDK_ROOT"
+          west update --narrow -o=--depth=1
+          west zephyr-export
+          west zap-install --matter-path "$NCS_SDK_ROOT/modules/lib/matter"
+
+      - name: Build and check firmware
+        run: |
+          source /opt/toolchain-env.sh
+          python3 scripts/build.py --board "$BOARD" \
+            --zap "$NCS_SDK_ROOT/modules/lib/matter/.zap-install/zap-cli"
+          python3 scripts/check-build.py --board "$BOARD"
+
+      - name: Collect firmware
+        run: |
+          mkdir -p target/firmware
+          cp "target/build/$BOARD/zephyr/zephyr.hex" "target/firmware/$BOARD.hex"
+          cp "target/build/$BOARD/zephyr/zephyr.elf" "target/firmware/$BOARD.elf"
+          if [[ "$BOARD" == nrf52840 ]]; then
+            cp "target/build/$BOARD/zephyr/zephyr.uf2" "target/firmware/$BOARD.uf2"
+          fi
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: firmware-${{ matrix.board }}
+          path: target/firmware/
+          if-no-files-found: error
+          retention-days: 14
