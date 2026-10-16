@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -147,10 +148,47 @@ def _bundle_versions(toolchain: Path) -> set[str]:
     return versions
 
 
-def _validate_toolchain(toolchain: Path) -> Path:
+def _sdk_bundle_id(sdk: Path) -> str | None:
+    """Reproduce Nordic's scripts/print_toolchain_checksum.sh for this host."""
+    platform = {'linux': 'linux', 'darwin': 'darwin', 'win32': 'win10'}.get(sys.platform)
+    if platform is None:
+        return None
+    scripts = sdk / 'nrf/scripts'
+    sources = (scripts / 'requirements-fixed.txt', scripts / f'tools-versions-{platform}.yml')
+    if not all(path.is_file() for path in sources):
+        return None
+    # Nordic concatenates these files, removes CR at line ends, and takes the
+    # first ten SHA-256 digits. Preserve blank lines and final-newline state.
+    contents = b''.join(path.read_bytes() for path in sources)
+    contents = re.sub(rb'\r(?=\n|$)', b'', contents)
+    return hashlib.sha256(contents).hexdigest()[:10]
+
+
+def _toolchain_bundle_id(toolchain: Path) -> str | None:
+    manifest = toolchain / 'manifest.json'
+    identifier = (json.loads(manifest.read_text()).get('bundle_id', toolchain.name)
+                  if manifest.is_file() else toolchain.name)
+    return identifier if isinstance(identifier, str) and re.fullmatch(r'[0-9a-f]{10}', identifier) else None
+
+
+def _matches_sdk_bundle(toolchain: Path, sdk: Path) -> bool:
+    expected = _sdk_bundle_id(sdk)
+    return expected is not None and _toolchain_bundle_id(toolchain) == expected
+
+
+def _validate_toolchain(toolchain: Path, sdk: Path) -> Path:
     if not (toolchain / 'environment.json').is_file():
         raise RuntimeError(f'Nordic toolchain not found at {toolchain} (missing environment.json). '
                            'Select it with --toolchain or NCS_TOOLCHAIN_ROOT. No tools installed.')
+    expected = _sdk_bundle_id(sdk)
+    actual = _toolchain_bundle_id(toolchain)
+    if expected is not None and actual is not None:
+        if actual != expected:
+            raise RuntimeError(f'Toolchain at {toolchain} has bundle ID {actual}, but NCS {SDK_VERSION} '
+                               f'requires {expected} on {sys.platform}.')
+        # Official bundles can retain the PR branch used to build them in
+        # installer metadata. The SDK-derived ID establishes compatibility.
+        return toolchain
     versions = _bundle_versions(toolchain)
     if versions and SDK_VERSION not in versions:
         raise RuntimeError(f'Toolchain at {toolchain} targets NCS {", ".join(sorted(versions))}, '
@@ -161,7 +199,7 @@ def _validate_toolchain(toolchain: Path) -> Path:
 def _toolchain_directory(args: argparse.Namespace, sdk: Path) -> Path:
     selected = _override(args, 'toolchain', 'NCS_TOOLCHAIN_ROOT')
     if selected:
-        return _validate_toolchain(selected)
+        return _validate_toolchain(selected, sdk)
     # Find the bundle containing the active Python or Zephyr SDK. This also
     # supports custom installation roots without depending on a shell utility.
     active = [Path(sys.executable)]
@@ -175,14 +213,16 @@ def _toolchain_directory(args: argparse.Namespace, sdk: Path) -> Path:
         path = path.expanduser().resolve()
         for parent in (path, *path.parents):
             if (parent / 'environment.json').is_file():
-                return _validate_toolchain(parent)
+                return _validate_toolchain(parent, sdk)
     roots = [sdk.parent, *_install_roots()]
     found = {path.resolve() for root in roots for path in (root / 'toolchains').glob('*')
              if (path / 'environment.json').is_file()}
-    matching = {path for path in found if SDK_VERSION in _bundle_versions(path)}
+    matching = {path for path in found if _matches_sdk_bundle(path, sdk)}
+    if not matching:
+        matching = {path for path in found if SDK_VERSION in _bundle_versions(path)}
     candidates = matching or {path for path in found if not _bundle_versions(path)}
     if len(candidates) == 1:
-        return _validate_toolchain(candidates.pop())
+        return _validate_toolchain(candidates.pop(), sdk)
     detail = ' Multiple bundles found: ' + ', '.join(str(p) for p in sorted(candidates)) if candidates else ''
     raise RuntimeError('Select the matching installed Nordic toolchain with --toolchain or '
                        'NCS_TOOLCHAIN_ROOT, or use a Nordic toolchain terminal.' + detail + ' No tools installed.')

@@ -91,6 +91,26 @@ class InstalledToolsTests(unittest.TestCase):
         return directory
 
     @staticmethod
+    def sdk_toolchain_inputs(sdk: Path) -> None:
+        scripts = sdk / 'nrf/scripts'
+        scripts.mkdir(parents=True)
+        (scripts / 'requirements-fixed.txt').write_bytes(b'west==1.4.0\nJinja2==3.1.6\n')
+        for platform, version in (('linux', '3.12.4'), ('darwin', '3.12.5'), ('win10', '3.12.6')):
+            (scripts / f'tools-versions-{platform}.yml').write_bytes(
+                f'python:\n  version: {version}\n'.encode())
+
+    @staticmethod
+    def pr_bundle_metadata(toolchain: Path, bundle_id: str) -> None:
+        (toolchain / 'manifest.json').write_text(json.dumps({
+            'bundle_id': bundle_id,
+            'ncs_version': {'type': 'branch', 'branch_name': 'PR-30809'},
+        }))
+        (toolchain.parent / 'toolchains.json').write_text(json.dumps([{
+            'toolchains': [{'identifier': {'bundle_id': toolchain.name},
+                            'ncs_versions': ['PR-30809']}],
+        }]))
+
+    @staticmethod
     def options(sdk: Path | None = None, toolchain: Path | None = None) -> argparse.Namespace:
         return argparse.Namespace(sdk=sdk, toolchain=toolchain)
 
@@ -278,6 +298,129 @@ class InstalledToolsTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, '3[.]4[.]1'):
             nordic.installed_tools(self.options(sdk, toolchain))
         self.run.assert_not_called()
+
+    def test_compiler_accepts_sdk_checksum_despite_pr_version_metadata(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain('toolchains/b2d396f613')
+        self.pr_bundle_metadata(toolchain, 'b2d396f613')
+        mapping = (toolchain.parent / 'toolchains.json').read_bytes()
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            selected_sdk, python, _ = nordic.installed_tools(self.options(sdk, toolchain), compiler=True)
+        self.assertEqual(selected_sdk, sdk)
+        self.assertEqual(python, toolchain / 'bin/python3')
+        self.assertEqual((toolchain.parent / 'toolchains.json').read_bytes(), mapping)
+        self.assertIn('import west, jinja2, lark, matter.idl', self.run.call_args_list[0].args[0])
+        self.assertTrue(any(call.args[0][0].endswith('/arm-zephyr-eabi-gcc')
+                            for call in self.run.call_args_list))
+
+    def test_sdk_checksum_discovers_renamed_bundle_with_pr_metadata(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain('toolchains/renamed official bundle')
+        incompatible = self.toolchain('toolchains/unrelated bundle')
+        self.pr_bundle_metadata(toolchain, 'b2d396f613')
+        self.pr_bundle_metadata(incompatible, '0000000000')
+        (toolchain.parent / 'toolchains.json').write_text(json.dumps([{
+            'toolchains': [
+                {'identifier': {'bundle_id': path.name}, 'ncs_versions': ['PR-30809']}
+                for path in (toolchain, incompatible)
+            ],
+        }]))
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            selected_sdk, python, _ = nordic.installed_tools(self.options(sdk))
+        self.assertEqual(selected_sdk, sdk)
+        self.assertEqual(python, toolchain / 'bin/python3')
+
+    def test_sdk_checksum_uses_platform_specific_inputs(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain()
+        # Fixed hashes of the fixture requirements followed by each platform's
+        # tools file, matching Nordic's print_toolchain_checksum.sh contract.
+        for platform, bundle_id in (('linux', 'b2d396f613'), ('darwin', '267de0933d'),
+                                    ('win32', 'f7d4ff42f9')):
+            with self.subTest(platform=platform), mock.patch.object(nordic.sys, 'platform', platform):
+                self.pr_bundle_metadata(toolchain, bundle_id)
+                self.assertTrue(nordic._matches_sdk_bundle(toolchain, sdk))
+
+    def test_sdk_checksum_uses_directory_id_when_manifest_has_no_id(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain('toolchains/b2d396f613')
+        (toolchain / 'manifest.json').write_text(json.dumps({
+            'ncs_version': {'type': 'branch', 'branch_name': 'PR-30809'},
+        }))
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            self.assertTrue(nordic._matches_sdk_bundle(toolchain, sdk))
+
+    def test_matching_directory_name_does_not_override_wrong_manifest_id(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain('toolchains/b2d396f613')
+        self.pr_bundle_metadata(toolchain, '0000000000')
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            self.assertFalse(nordic._matches_sdk_bundle(toolchain, sdk))
+            with self.assertRaisesRegex(RuntimeError, 'bundle ID'):
+                nordic.installed_tools(self.options(sdk, toolchain))
+        self.run.assert_not_called()
+
+    def test_release_version_metadata_does_not_override_a_wrong_sdk_checksum(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain()
+        self.pr_bundle_metadata(toolchain, '0000000000')
+        (toolchain.parent / 'toolchains.json').write_text(json.dumps([{
+            'toolchains': [{'identifier': {'bundle_id': toolchain.name},
+                            'ncs_versions': ['v3.4.1']}],
+        }]))
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            with self.assertRaisesRegex(RuntimeError, 'bundle ID'):
+                nordic.installed_tools(self.options(sdk, toolchain), compiler=True)
+        self.run.assert_not_called()
+
+    def test_pr_metadata_is_not_accepted_for_wrong_platform_bundle(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        toolchain = self.toolchain()
+        self.pr_bundle_metadata(toolchain, '267de0933d')
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            with self.assertRaisesRegex(RuntimeError, 'bundle ID'):
+                nordic.installed_tools(self.options(sdk, toolchain), compiler=True)
+        self.run.assert_not_called()
+
+    def test_sdk_checksum_normalizes_crlf_without_changing_content(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        scripts = sdk / 'nrf/scripts'
+        for name in ('requirements-fixed.txt', 'tools-versions-linux.yml'):
+            path = scripts / name
+            path.write_bytes(path.read_bytes().replace(b'\n', b'\r\n'))
+        toolchain = self.toolchain()
+        self.pr_bundle_metadata(toolchain, 'b2d396f613')
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            self.assertTrue(nordic._matches_sdk_bundle(toolchain, sdk))
+            (scripts / 'requirements-fixed.txt').write_bytes(b'west==1.5.0\r\nJinja2==3.1.6\r\n')
+            self.assertFalse(nordic._matches_sdk_bundle(toolchain, sdk))
+
+    def test_sdk_checksum_strips_eof_cr_without_adding_a_newline(self) -> None:
+        sdk = self.sdk()
+        self.sdk_toolchain_inputs(sdk)
+        tools = sdk / 'nrf/scripts/tools-versions-linux.yml'
+        tools.write_bytes(b'python:\r\n  version: 3.12.4\r')
+        toolchain = self.toolchain()
+        self.pr_bundle_metadata(toolchain, '5249b053d3')
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            self.assertTrue(nordic._matches_sdk_bundle(toolchain, sdk))
+
+    def test_missing_sdk_checksum_inputs_do_not_claim_a_bundle_match(self) -> None:
+        sdk = self.sdk()
+        toolchain = self.toolchain('toolchains/b2d396f613')
+        with mock.patch.object(nordic.sys, 'platform', 'linux'):
+            self.assertFalse(nordic._matches_sdk_bundle(toolchain, sdk))
+            self.sdk_toolchain_inputs(sdk)
+            (sdk / 'nrf/scripts/tools-versions-linux.yml').unlink()
+            self.assertFalse(nordic._matches_sdk_bundle(toolchain, sdk))
 
     def test_standard_install_location_is_resolved_without_a_machine_specific_root(self) -> None:
         sdk = self.sdk('v3.4.1')

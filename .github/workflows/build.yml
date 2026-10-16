@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   test:
-    name: Driver tests
+    name: Driver and build-tool tests
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -22,6 +22,8 @@ jobs:
           persist-credentials: false
       - name: Run driver tests
         run: python3 scripts/test-driver.py
+      - name: Run build-tool tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
 
   build:
     name: Build ${{ matrix.board }}
