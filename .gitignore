@@ -33,12 +33,10 @@ dependencies.lock
 # Legacy Matter generation outputs; only the .zap model is versioned
 /src/data_model/zap-generated/
 /src/data_model/mailbox-motion.matter
-/matter_qr.png
 
 # KiCad exports and local editor state
 /hw/board-*/fabrication/
 /hw/board-*/bom.csv
-/hw/board-*/3dmodels/XIAO_*_bare_vendor_PCB.step
 *-backups/
 *.kicad_prl
 *.lck
