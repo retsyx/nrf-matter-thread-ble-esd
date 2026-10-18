@@ -189,9 +189,3 @@ network, then reboots and opens its 15-minute BLE pairing window. The provisione
 passcode, discriminator, salt and verifier remain unchanged, so the same QR or
 manual pairing code works again. A shorter press cancels the reset. If SW1 is
 held during boot, release it before starting a new hold.
-
-SW1 is a separate button from the XIAO's MCU reset button. On an older carrier,
-wire a normally-open momentary switch between **D0 and GND** to use this firmware
-feature. Its internal pull-up and low-power SENSE/PORT interrupt allow the MCU
-to sleep while the button is released; there is no periodic button polling.
-
