@@ -5,4 +5,154 @@
 (symbol "C"  (pin_numbers (hide yes)) (pin_names (offset 1.016) (hide yes)) (exclude_from_sim no) (in_bom yes) (on_board yes)(property "Reference" "C" (at 0 5.08 0) (effects (font (size 1.27 1.27))))(property "Value" "C" (at 0 -5.08 0) (effects (font (size 1.27 1.27))))(property "Footprint" "Board:C_0603_1608Metric" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(property "Description" "Ceramic capacitor, 0603 imperial / 1608 metric" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(symbol "C_0_1" (polyline (pts (xy -1.905 0.635) (xy 1.905 0.635)) (stroke (width 0.254) (type default)) (fill (type none)))(polyline (pts (xy -1.905 -0.635) (xy 1.905 -0.635)) (stroke (width 0.254) (type default)) (fill (type none))))(symbol "C_1_1" (pin passive line (at 0 3.81 270) (length 3.175) (name "~" (effects (font (size 1.016 1.016)))) (number "1" (effects (font (size 1.016 1.016))))) (pin passive line (at 0 -3.81 90) (length 3.175) (name "~" (effects (font (size 1.016 1.016)))) (number "2" (effects (font (size 1.016 1.016)))))))
 (symbol "Battery_2"  (pin_names (offset 1.016)) (exclude_from_sim no) (in_bom yes) (on_board yes)(property "Reference" "J" (at 0 5.08 0) (effects (font (size 1.27 1.27))))(property "Value" "Battery_2" (at 0 -5.08 0) (effects (font (size 1.27 1.27))))(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(property "Description" "Battery connector, pin 1 negative and pin 2 positive" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(symbol "Battery_2_0_1" (rectangle (start -2.54 3.81) (end 2.54 -6.35) (stroke (width 0.254) (type default)) (fill (type background))))(symbol "Battery_2_1_1" (pin passive line (at 5.08 1.27 180) (length 2.54) (name "-" (effects (font (size 1.016 1.016)))) (number "1" (effects (font (size 1.016 1.016))))) (pin passive line (at 5.08 -3.81 180) (length 2.54) (name "+" (effects (font (size 1.016 1.016)))) (number "2" (effects (font (size 1.016 1.016)))))))
 (symbol "PWR_FLAG" (power) (pin_numbers (hide yes)) (pin_names (offset 1.016) (hide yes)) (exclude_from_sim no) (in_bom no) (on_board no)(property "Reference" "#FLG" (at 0 5.08 0) (effects (font (size 1.27 1.27))))(property "Value" "PWR_FLAG" (at 0 -5.08 0) (effects (font (size 1.27 1.27))))(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(property "Description" "Declare external battery/ground power source for ERC" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))(symbol "PWR_FLAG_0_1" (polyline (pts (xy 0 0) (xy 0 1.27) (xy -1.27 1.905) (xy 0 2.54) (xy 1.27 1.905) (xy 0 1.27)) (stroke (width 0.254) (type default)) (fill (type none))))(symbol "PWR_FLAG_1_1" (pin power_out line (at 0 0 90) (length 0) (name "pwr" (effects (font (size 1.016 1.016)))) (number "1" (effects (font (size 1.016 1.016)))))))
+
+(symbol "SW_Push"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "SW"
+			(at 1.27 2.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SW_Push"
+			(at 0 -1.524 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Board:SW_SPST_B3U-1000P"
+			(at 0 5.08 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf"
+			(at 0 5.08 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Push button switch, generic, two pins"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "switch normally-open pushbutton push-button"
+			(at 0 0 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "SW_Push_0_1"
+			(circle
+				(center -2.032 0)
+				(radius 0.508)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 0 1.27) (xy 0 3.048)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(circle
+				(center 2.032 0)
+				(radius 0.508)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 2.54 1.27) (xy -2.54 1.27)
+				)
+				(stroke
+					(width 0)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 2.54)
+				(name "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 5.08 0 180)
+				(length 2.54)
+				(name "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+	)
 )

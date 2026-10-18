@@ -1,6 +1,6 @@
 {
   "availability_checked_on": "",
-  "metadata_verified_on": "2026-10-07",
+  "metadata_verified_on": "2026-10-18",
   "board": "board-nRF54L15: XIAO nRF54L15 direct SMD carrier, 30 x 42 mm",
   "purchasing_notes": "Per-carrier assembly quantities; select only standard XIAO nRF54L15 SKU 101991421 with unsoldered headers. All 16 module contacts are soldered directly. Module-specific underside battery pattern. External battery is optional. Carrier J1 polarity is pin 1 GND / pin 2 VBAT. Stock, prices, and availability have not been checked. Mounting holes are PCB features, not purchased parts. H1-H6 and TP1/TP2 are unpurchased PCB features, excluded from purchasing BOM and placement files.",
   "parts": [
@@ -90,6 +90,40 @@
       "properties": {},
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
+      "cad_placement": true,
+      "in_bom": true,
+      "in_positions": true,
+      "exclude_from_bom": false,
+      "exclude_from_position_files": false
+    },
+    {
+      "references": [
+        "SW1"
+      ],
+      "quantity": 1,
+      "value": "B3U-1000P",
+      "footprint": "Board:SW_SPST_B3U-1000P",
+      "manufacturer": "OMRON (now Aratas)",
+      "mpn": "B3U-1000P",
+      "datasheet_url": "https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf",
+      "datasheet_file": "datasheets/omron-b3u.pdf",
+      "supplier": "DigiKey",
+      "supplier_part_number": "SW1020CT-ND",
+      "purchase_url": "https://www.digikey.com/en/products/detail/aratas-formerly-omron-components/B3U-1000P/1534338",
+      "stock_on_check": "",
+      "assembly": "SMD reflow",
+      "notes": "Top-actuated SPST-NO momentary factory-reset switch, no locating boss or separate ground terminal; 3.0 x 2.5 mm body, 1.6 mm actuator height, nominal 1.5 N force. Carrier terminal 1 -> FACTORY_RESET / XIAO D0 (P1.04); terminal 2 -> GND. Firmware uses the internal GPIO pull-up and low-power sensing; no external resistor/capacitor is fitted. Hold 5 seconds for Matter/Thread state erasure and reboot with the same provisioned Matter credentials. Manufacturer datasheet A162-E1-07 page 2 recommended land dimensions were checked against local footprint adapted from KiCad 10.0.6: two nominal 0.8 x 1.7 mm lands at +/-1.7 mm (4.2 mm outer span / 2.6 mm inner gap). 10 uA at 1 V minimum applicable load (reference), 5 ms maximum bounce, 100 Mohm minimum insulation resistance. Supplier listing was verified; stock and pricing are not claimed. Do not wash after soldering (manufacturer restriction).",
+      "on_board": true,
+      "purchased": true,
+      "properties": {
+        "Contact form": "SPST-NO",
+        "GPIO": "P1.04",
+        "Operation": "Hold 5 s for factory reset",
+        "Body": "3.0 x 2.5 mm",
+        "Actuator height": "1.6 mm"
+      },
+      "availability_checked_on": "",
+      "metadata_verified_on": "2026-10-18",
       "cad_placement": true,
       "in_bom": true,
       "in_positions": true,

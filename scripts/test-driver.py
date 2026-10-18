@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise real BMA400/battery code against mocked Zephyr services; install nothing."""
+"""Exercise driver code and factory-reset timing on the host; install nothing."""
 import os
 from pathlib import Path
 import shlex
@@ -30,6 +30,11 @@ def main():
         api_object = temporary / "bma400.o"
         subprocess.run([*cc, "-std=c99", *warnings, *includes, "-c",
                         str(project / "src/bma400/bma400.c"), "-o", str(api_object)], check=True)
+        reset_executable = temporary / "factory-reset-button"
+        subprocess.run([*cxx, "-std=c++17", *warnings, *includes,
+                        str(project / "tests/test_factory_reset_button.cpp"),
+                        "-o", str(reset_executable)], check=True)
+        subprocess.run([str(reset_executable)], check=True)
         # Both I2C addresses, switched/permanent dividers, and explicit opt-out.
         for address, switched, installed in ((0x14, 1, True), (0x15, 0, True), (0x14, 0, False)):
             executable = temporary / f"driver-{address:x}-{switched}-{installed}"

@@ -19,6 +19,7 @@ from unittest import mock
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'scripts/nordic.py'
+sys.path.insert(0, str(SCRIPT.parent))
 SPEC = importlib.util.spec_from_file_location('nordic_build_tools', SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 nordic = importlib.util.module_from_spec(SPEC)
@@ -538,6 +539,61 @@ class BuildScriptTests(unittest.TestCase):
                                                '--zap', '/custom ZAP/zap-cli']):
             build_script.main()
         self.zap_selection.assert_called_once_with(Path('/custom ZAP/zap-cli'))
+
+    def test_real_local_build_generates_or_reuses_credentials_before_west(self) -> None:
+        tools = (Path('/ncs/v3.4.1'), Path('/tools/bin/python3'),
+                 {'ZEPHYR_SDK_INSTALL_DIR': '/tools/opt/zephyr-sdk'})
+        with mock.patch.object(build_script, 'installed_tools', return_value=tools), \
+                mock.patch.object(build_script, 'run') as run, \
+                mock.patch.object(sys, 'argv', ['build.py', '--board', 'nrf54l15', '--build-dir', '/build']):
+            build_script.main()
+        self.assertEqual(run.call_count, 2)
+        provision, build = run.call_args_list
+        self.assertEqual(provision.args[0], ['/tools/bin/python3', '/portable-project/scripts/provision.py',
+                                           '--output-dir', '/portable-project/provisioning/nrf54l15'])
+        self.assertIs(provision.kwargs['dry_run'], False)
+        self.assertIn('-DEXTRA_CONF_FILE=/portable-project/provisioning/nrf54l15/provisioning.conf',
+                      build.args[0])
+
+    def test_github_profile_explicitly_uses_defaults_without_generating_credentials(self) -> None:
+        tools = (Path('/ncs/v3.4.1'), Path('/tools/bin/python3'),
+                 {'ZEPHYR_SDK_INSTALL_DIR': '/tools/opt/zephyr-sdk'})
+        with mock.patch.object(build_script, 'installed_tools', return_value=tools), \
+                mock.patch.object(build_script, 'load_provisioning') as load, \
+                mock.patch.object(build_script, 'run') as run, \
+                mock.patch.object(sys, 'argv', ['build.py', '--default-provisioning', '--build-dir', '/build']):
+            build_script.main()
+        load.assert_not_called()
+        run.assert_called_once()
+        self.assertIn('-DEXTRA_CONF_FILE=/portable-project/config/default-provisioning.conf', run.call_args.args[0])
+        self.assertIn('-DEXTRA_DTC_OVERLAY_FILE=', run.call_args.args[0])
+
+    def test_explicit_identity_is_validated_and_shared_across_build_variants(self) -> None:
+        tools = (Path('/ncs/v3.4.1'), Path('/tools/bin/python3'),
+                 {'ZEPHYR_SDK_INSTALL_DIR': '/tools/opt/zephyr-sdk'})
+        with mock.patch.object(build_script, 'installed_tools', return_value=tools), \
+                mock.patch.object(build_script, 'load_provisioning') as load, \
+                mock.patch.object(build_script, 'run') as run, \
+                mock.patch.object(sys, 'argv', ['build.py', '--dry-run', '--console', '--build-dir', '/build',
+                                               '--provisioning', '/device/provisioning.json']):
+            build_script.main()
+        load.assert_called_once_with(Path('/device/provisioning.json'))
+        run.assert_called_once()  # Dry runs never create credentials or pairing images.
+        self.assertIn('-DEXTRA_CONF_FILE=/portable-project/config/console.conf;/device/provisioning.conf',
+                      run.call_args.args[0])
+
+    def test_pristine_cannot_delete_provisioning_inside_the_build_directory(self) -> None:
+        tools = (Path('/ncs/v3.4.1'), Path('/tools/bin/python3'),
+                 {'ZEPHYR_SDK_INSTALL_DIR': '/tools/opt/zephyr-sdk'})
+        with mock.patch.object(build_script, 'installed_tools', return_value=tools), \
+                mock.patch.object(build_script, 'pristine_removed_sdk_cache') as pristine, \
+                mock.patch.object(build_script, 'run') as run, \
+                mock.patch.object(sys, 'argv', ['build.py', '--pristine', '--build-dir', '/build',
+                                               '--provisioning', '/build/credentials/provisioning.json']):
+            with self.assertRaisesRegex(RuntimeError, 'outside the build directory'):
+                build_script.main()
+        pristine.assert_not_called()
+        run.assert_not_called()
 
     def test_missing_zap_stops_before_west_build(self) -> None:
         self.zap_selection.side_effect = RuntimeError('Installed ZAP CLI not found.')

@@ -20,6 +20,7 @@ carrier itself is not a Nordic footprint.
 | BMA400 SDA | D4 | P0.04 | P1.10 |
 | BMA400 SCL | D5 | P0.05 | P1.11 |
 | BMA400 INT1 | D2 | P0.28 | P1.06 |
+| Factory-reset SW1 | D0 to GND | P0.02 | P1.04 |
 
 Use a 3.3 V compatible BMA400 board with suitable I2C pull-ups. The application
 uses 100 kHz I2C and an active-high, push-pull INT1 signal. Both TWIM devices
@@ -27,6 +28,14 @@ enable Zephyr runtime power management so the driver can suspend between
 transactions. The sensor stays powered to detect motion while the CPU sleeps. INT1 uses
 GPIO SENSE/PORT edge detection (`sense-edge-mask`) rather than a high-accuracy
 GPIOTE IN channel.
+
+SW1 is a normally-open Omron B3U-1000P tactile switch. Firmware enables an
+internal pull-up on D0 and adds that pin to the same low-power SENSE/PORT edge
+mask; no external pull-up or idle polling is needed. A five-second hold erases
+Matter pairings, operational settings and Thread membership, then reboots ready
+to pair using the same provisioned credentials. Release before five seconds to
+cancel. A switch held during boot must be released before it can request reset.
+This is separate from the module's hardware RESET signal.
 
 The default BMA400 address is `0x14` (SDO low). For a sensor with SDO high, change
 `bma400@14` to `bma400@15` and `reg = <0x14>` to `reg = <0x15>` in the selected

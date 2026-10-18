@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import argparse
 from pathlib import Path
 import sys
 import tempfile
@@ -10,6 +11,7 @@ from unittest import mock
 
 
 SCRIPTS = Path(__file__).resolve().parents[1] / 'scripts'
+sys.path.insert(0, str(SCRIPTS))
 NORDIC_SPEC = importlib.util.spec_from_file_location('checker_nordic', SCRIPTS / 'nordic.py')
 assert NORDIC_SPEC is not None and NORDIC_SPEC.loader is not None
 nordic = importlib.util.module_from_spec(NORDIC_SPEC)
@@ -36,6 +38,36 @@ def mapped_header(node: str = 'DT_N_S_custom_app', address: int = 0,
         f'#define {node}_REG_IDX_0_VAL_ADDRESS {address} /* generated address */',
         f'#define {node}_REG_IDX_0_VAL_SIZE {size:#x} /* generated size */',
     ]) + '\n'
+
+
+class PairingConfigurationTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.expected = checker.pairing_configuration(argparse.Namespace(default_provisioning=True))
+
+    def test_published_profile_pins_existing_credentials_and_verifier(self) -> None:
+        self.assertEqual(self.expected['CONFIG_CHIP_DEVICE_DISCRIMINATOR'], '0x0F00')
+        self.assertEqual(self.expected['CONFIG_CHIP_DEVICE_SPAKE2_PASSCODE'], '20202021')
+        self.assertIn('CONFIG_CHIP_DEVICE_SPAKE2_TEST_VERIFIER', self.expected)
+        checker.check_pairing(self.expected, self.expected)
+
+    def test_every_identity_field_is_checked(self) -> None:
+        for name, value in self.expected.items():
+            changed = self.expected | {name: '"changed"' if value.startswith('"') else '1'}
+            with self.subTest(name=name), self.assertRaisesRegex(RuntimeError, name):
+                checker.check_pairing(changed, self.expected)
+            missing = {key: val for key, val in self.expected.items() if key != name}
+            with self.subTest(missing=name), self.assertRaisesRegex(RuntimeError, name):
+                checker.check_pairing(missing, self.expected)
+
+    def test_compiled_values_reject_stale_verifier_with_correct_pin(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            header = Path(directory) / 'autoconf.h'
+            header.write_text(''.join(f'#define {name} {value}\n' for name, value in self.expected.items()))
+            checker.check_compiled_pairing(header, self.expected)
+            contents = header.read_text().replace(self.expected['CONFIG_CHIP_DEVICE_SPAKE2_TEST_VERIFIER'], '"stale"')
+            header.write_text(contents)
+            with self.assertRaisesRegex(RuntimeError, 'CONFIG_CHIP_DEVICE_SPAKE2_TEST_VERIFIER'):
+                checker.check_compiled_pairing(header, self.expected)
 
 
 class ApplicationPartitionTests(unittest.TestCase):

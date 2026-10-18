@@ -1463,5 +1463,58 @@
       "exclude_from_bom": true,
       "exclude_from_position_files": true
     }
-  ]
+  ],
+  "factory_reset_button": {
+    "reference": "SW1",
+    "mpn": "B3U-1000P",
+    "contact_form": "SPST-NO momentary, top actuated",
+    "footprint": "Board:SW_SPST_B3U-1000P",
+    "carrier_placement": {
+      "x_mm": 51.6,
+      "y_mm": 53.2,
+      "rotation_deg": 180,
+      "coordinate_frame": "Absolute carrier KiCad coordinates in mm, front side"
+    },
+    "module_local_center_mm": [
+      -12.4,
+      -7.3
+    ],
+    "body_size_mm": [
+      3.0,
+      2.5
+    ],
+    "actuator_height_mm": 1.6,
+    "pads": [
+      {
+        "pad": "1",
+        "net": "/FACTORY_RESET",
+        "module_edge_pad": "1 / D0",
+        "mcu_gpio": "P1.04",
+        "carrier_center_mm": [
+          53.3,
+          53.2
+        ]
+      },
+      {
+        "pad": "2",
+        "net": "/GND",
+        "carrier_center_mm": [
+          49.9,
+          53.2
+        ]
+      }
+    ],
+    "routing": "0.25 mm F.Cu D0 trace; GND F.Cu trace to 0.6/0.3 mm through via at (50.6,55.3), connected to refilled B.Cu ground plane.",
+    "placement_note": "Top access in USB-end left edge strip, outside U1 courtyard and the antenna/NFC keepout; carrier outline remains 30 x 42 mm.",
+    "electrical_note": "Internal GPIO pull-up only; normally open switch adds no intended DC conduction path while released. Actual leakage and standby current require prototype measurement.",
+    "behavior": "Hold 5 seconds for factory reset; Matter/Thread user state is erased, provisioned Matter setup credentials are retained.",
+    "datasheet_url": "https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf",
+    "datasheet_file": "datasheets/omron-b3u.pdf",
+    "footprint_source": "Installed KiCad 10.0.6 Button_Switch_SMD.pretty/SW_SPST_B3U-1000P.kicad_mod; recommended manufacturer land pattern on datasheet page 2 checked (nominal 0.8 x 1.7 mm lands at +/-1.7 mm, adapted from the installed KiCad footprint).",
+    "model": {
+      "path": "3dmodels/SW_SPST_B3U-1000P.step",
+      "source": "Installed KiCad 10.0.6 Button_Switch_SMD.3dshapes/SW_SPST_B3U-1000P.step",
+      "sha256": "4b5ee4da023d76030db22a90f5835f3691d5e4e9fc41b3f37b2c5922c65d307b"
+    }
+  }
 }

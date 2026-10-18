@@ -9,6 +9,7 @@ import sys
 
 from nordic import BOARDS, ROOT, add_options, build_directory, installed_tools, run
 from generate import installed_zap
+from provisioning import load as load_provisioning
 
 
 def validate_build_paths(*paths) -> None:
@@ -77,6 +78,11 @@ def main() -> None:
     parser.add_argument('-j', '--jobs', type=int, default=min(os.cpu_count() or 4, 8))
     parser.add_argument('--pristine', action='store_true', help='reconfigure the selected build from scratch')
     parser.add_argument('--zap', type=Path, help='installed ZAP CLI (or ZAP_CLI / zap-cli on PATH)')
+    provisioning = parser.add_mutually_exclusive_group()
+    provisioning.add_argument('--provisioning', type=Path,
+                              help='reuse a custom provisioning.json generated with scripts/provision.py')
+    provisioning.add_argument('--default-provisioning', action='store_true',
+                              help='use the published development pairing codes (GitHub build/release profile)')
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error('--jobs must be positive')
@@ -87,6 +93,21 @@ def main() -> None:
     if not args.pristine:
         validate_build_cache(build, sdk, python, env)
     zap = installed_zap(args.zap)
+    # Keep credentials outside the build directory so --pristine and build
+    # variants preserve the pairing label. A new device can use an explicit file.
+    credentials = None
+    if not args.default_provisioning:
+        credentials = (args.provisioning.expanduser().resolve() if args.provisioning else
+                       ROOT / 'provisioning' / args.board / 'provisioning.json')
+        validate_build_paths(credentials)
+        if credentials.is_relative_to(build):
+            raise RuntimeError('Matter provisioning must be outside the build directory so --pristine preserves it.')
+        if credentials.name != 'provisioning.json':
+            raise RuntimeError('--provisioning must point to the provisioning.json created by scripts/provision.py.')
+        if args.provisioning or credentials.exists():
+            load_provisioning(credentials)
+        if args.dry_run:
+            print(f'Custom Matter credentials: {credentials} (generate once if missing; reuse thereafter)')
     if args.pristine:
         pristine_removed_sdk_cache(build, sdk, env, dry_run=args.dry_run)
     command = [str(python), '-m', 'west', 'build', '--no-sysbuild', '-b', BOARDS[args.board],
@@ -101,12 +122,21 @@ def main() -> None:
                for name in ('console', 'battery') if getattr(args, name)]
     if args.usb_console:
         configs.append(ROOT / 'config/usb-console.conf')
-    if configs:
-        command.append('-DEXTRA_CONF_FILE=' + ';'.join(str(config) for config in configs))
+    if credentials is not None:
+        if not args.dry_run:
+            run([str(python), str(ROOT / 'scripts/provision.py'), '--output-dir', str(credentials.parent)],
+                cwd=ROOT, env=env, dry_run=False)
+        configs.append(credentials.parent / 'provisioning.conf')
+    else:
+        configs.append(ROOT / 'config/default-provisioning.conf')
+    # Explicit selections clear a previous profile from CMake's cache too.
+    command.append('-DEXTRA_CONF_FILE=' + ';'.join(str(config) for config in configs))
     if args.console:
         command.append(f'-DEXTRA_DTC_OVERLAY_FILE={ROOT / "boards" / ("console_" + args.board + ".overlay")}')
     elif args.usb_console:
         command.append(f'-DEXTRA_DTC_OVERLAY_FILE={ROOT / "boards/usb_console_nrf52840.overlay"}')
+    else:
+        command.append('-DEXTRA_DTC_OVERLAY_FILE=')
     if args.board == 'nrf52840':
         command.append('-DCONFIG_BUILD_OUTPUT_UF2=y')
     # CMAKE_BUILD_PARALLEL_LEVEL also applies to Matter's nested builds.
@@ -116,6 +146,10 @@ def main() -> None:
         print(f'Firmware: {build / "zephyr/zephyr.hex"}')
         if args.board == 'nrf52840':
             print(f'UF2: {build / "zephyr/zephyr.uf2"}')
+        if credentials is not None:
+            print(f'Pairing card: {credentials.parent / "pairing.png"}')
+            print(f'Pairing QR: {credentials.parent / "pairing.svg"}')
+            print(f'Pairing codes: {credentials.parent / "pairing.txt"}')
 
 
 if __name__ == '__main__':

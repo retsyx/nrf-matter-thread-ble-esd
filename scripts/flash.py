@@ -32,6 +32,11 @@ def main() -> None:
     parser.add_argument('--commander', type=Path, help='path to installed JLinkExe')
     parser.add_argument('--board-id', choices=sorted(BOARD_IDS),
                         help='exact XIAO nRF52840 UF2 Board-ID (standard or Sense)')
+    provisioning = parser.add_mutually_exclusive_group()
+    provisioning.add_argument('--provisioning', type=Path,
+                              help='custom provisioning.json used for this build')
+    provisioning.add_argument('--default-provisioning', action='store_true',
+                              help='require the published development pairing codes')
     args = parser.parse_args()
     if args.runner == 'uf2' and args.board != 'nrf52840':
         parser.error('UF2 is supported only on the XIAO nRF52840')
@@ -58,6 +63,10 @@ def main() -> None:
     for option in ('console', 'usb_console', 'battery'):
         if getattr(args, option):
             check.append('--' + option.replace('_', '-'))
+    if args.provisioning:
+        check += ['--provisioning', str(args.provisioning.expanduser().resolve())]
+    elif args.default_provisioning:
+        check.append('--default-provisioning')
     # Validate every runner's artifact before it can access a connected device.
     # Dry runs print this command and still work without a completed build.
     run(check, cwd=ROOT, env=env, dry_run=args.dry_run)

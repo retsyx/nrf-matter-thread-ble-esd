@@ -19,6 +19,10 @@ radio timing, sleep current or battery discharge lifetime. Firmware builds and
 hardware tests remain separate validation steps. native_stubs is never included
 in firmware builds.
 
+The host checks also run the factory-reset button state machine: debounce,
+five-second hold, release cancellation, coalesced edges, stale timeouts,
+boot-held/stuck button protection, read-failure recovery and long uptime.
+
 Build portability checks (no host compiler needed):
   python -m unittest discover -s tests -p 'test_*.py'
 
@@ -31,3 +35,14 @@ has been removed, and protected application ranges for fixed/mapped partitions.
 ZAP tests mock the CLI to verify discovery, build-directory outputs, dry runs,
 preservation of previous artifacts on generation failure and unchanged-file
 timestamps. Running these tests does not require a ZAP installation.
+
+Provisioning tests check the published QR/manual/SPAKE2+ vector, manifest
+validation, retained identities, conflicting-input rejection, orphan artifacts,
+concurrent first creation and unchanged build-input timestamps. Cryptographic
+generation tests run when cryptography is available (included in the Nordic
+toolchain). PNG card checks cover its format, readable manual pairing code,
+QR content and regeneration without changing the saved identity. CLI checks
+cover pairing-card output paths and fallback to installed Nordic Python when
+qrcode, cryptography or Pillow is missing. Build-tool tests verify explicit
+GitHub defaults and custom local generation, including protection from
+--pristine deleting provisioning files.

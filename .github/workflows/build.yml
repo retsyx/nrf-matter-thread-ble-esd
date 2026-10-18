@@ -62,8 +62,9 @@ jobs:
         run: |
           source /opt/toolchain-env.sh
           python3 scripts/build.py --board "$BOARD" \
+            --default-provisioning \
             --zap "$NCS_SDK_ROOT/modules/lib/matter/.zap-install/zap-cli"
-          python3 scripts/check-build.py --board "$BOARD"
+          python3 scripts/check-build.py --board "$BOARD" --default-provisioning
 
       - name: Collect firmware
         run: |

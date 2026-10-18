@@ -11,6 +11,7 @@
 #include <lib/support/CodeUtils.h>
 #include <platform/CHIPDeviceLayer.h>
 #include <setup_payload/OnboardingCodesUtil.h>
+#include <zephyr/irq.h>
 #include <zephyr/logging/log.h>
 #ifdef CONFIG_SHELL
 #include <zephyr/shell/shell.h>
@@ -31,6 +32,7 @@ constexpr uint32_t kMotionHoldMs = 5000;
 constexpr uint32_t kSensorRetryMs = 60000;
 constexpr uint32_t kBatteryIntervalMs = 24 * 60 * 60 * 1000;
 constexpr gpio_dt_spec kMotionPin = GPIO_DT_SPEC_GET(DT_ALIAS(mailbox_motion), gpios);
+constexpr gpio_dt_spec kFactoryResetPin = GPIO_DT_SPEC_GET(DT_ALIAS(mailbox_factory_reset), gpios);
 K_SEM_DEFINE(sWake, 0, 1);
 
 #ifdef CONFIG_SHELL
@@ -65,6 +67,13 @@ void AppTask::MotionInterrupt(const device *, gpio_callback *, gpio_port_pins_t)
 void AppTask::MotionTimeout(k_timer *) { Instance().PostEvent(MotionExpired); }
 void AppTask::SensorTimeout(k_timer *) { Instance().PostEvent(RetrySensor); }
 void AppTask::BatteryTimeout(k_timer *) { Instance().PostEvent(Battery); }
+void AppTask::FactoryResetInterrupt(const device *, gpio_callback *, gpio_port_pins_t)
+{
+    auto &app = Instance();
+    atomic_inc(&app.mFactoryResetEdges);
+    app.PostEvent(ResetButton);
+}
+void AppTask::FactoryResetTimeout(k_timer *) { Instance().PostEvent(ResetButtonTimer); }
 
 CHIP_ERROR AppTask::Init()
 {
@@ -86,7 +95,26 @@ CHIP_ERROR AppTask::Init()
     k_timer_init(&mMotionTimer, MotionTimeout, nullptr);
     k_timer_init(&mSensorTimer, SensorTimeout, nullptr);
     k_timer_init(&mBatteryTimer, BatteryTimeout, nullptr);
+    k_timer_init(&mFactoryResetTimer, FactoryResetTimeout, nullptr);
     MailboxBootCheckpoint(BootDiagnosticStage::TimersComplete, "after application timers init");
+    VerifyOrReturnError(gpio_is_ready_dt(&kFactoryResetPin), CHIP_ERROR_INCORRECT_STATE);
+    VerifyOrReturnError(gpio_pin_configure_dt(&kFactoryResetPin, GPIO_INPUT | GPIO_PULL_UP) == 0,
+                        CHIP_ERROR_INCORRECT_STATE);
+    const int resetPressed = gpio_pin_get_dt(&kFactoryResetPin);
+    VerifyOrReturnError(resetPressed >= 0, CHIP_ERROR_INCORRECT_STATE);
+    mFactoryResetButton.Initialize(resetPressed > 0);
+    gpio_init_callback(&mFactoryResetCallback, FactoryResetInterrupt, BIT(kFactoryResetPin.pin));
+    VerifyOrReturnError(gpio_add_callback(kFactoryResetPin.port, &mFactoryResetCallback) == 0,
+                        CHIP_ERROR_INCORRECT_STATE);
+    VerifyOrReturnError(gpio_pin_interrupt_configure_dt(&kFactoryResetPin, GPIO_INT_EDGE_BOTH) == 0,
+                        CHIP_ERROR_INCORRECT_STATE);
+    // Catch a change between the initial sample and enabling the PORT interrupt.
+    const int resetPressedAfterEnable = gpio_pin_get_dt(&kFactoryResetPin);
+    VerifyOrReturnError(resetPressedAfterEnable >= 0, CHIP_ERROR_INCORRECT_STATE);
+    if (resetPressedAfterEnable != resetPressed) {
+        atomic_inc(&mFactoryResetEdges);
+        PostEvent(ResetButton);
+    }
     MailboxBootCheckpoint(BootDiagnosticStage::BatteryBegin, "before battery init");
     mBattery.Init();
     MailboxBootCheckpoint(BootDiagnosticStage::BatteryComplete, "after battery init");
@@ -123,6 +151,8 @@ CHIP_ERROR AppTask::StartApp()
     for (;;) {
         k_sem_take(&sWake, K_FOREVER);
         const atomic_val_t events = atomic_set(&mEvents, 0);
+        if (events & (ResetButton | ResetButtonTimer)) HandleFactoryResetButton();
+        if (mFactoryResetStarted) continue;
         if (events & MotionExpired) { SetOccupancy(false); RearmSensor(); }
         if (events & RetrySensor) { if (!mOccupied) RearmSensor(); }
         if (events & Motion) HandleMotion(false);
@@ -130,6 +160,41 @@ CHIP_ERROR AppTask::StartApp()
         if (events & Battery) SampleBattery();
         if (events & Commission) OpenCommissioningWindow();
         if (events & Status) PrintStatus();
+    }
+}
+
+void AppTask::HandleFactoryResetButton()
+{
+    if (mFactoryResetStarted) return;
+    // Observe edges, the pin and the deadline together. An old timer event must
+    // never count time from a press that has since been released/repressed.
+    const unsigned int key = irq_lock();
+    const uint64_t nowMs = k_uptime_get();
+    const atomic_val_t edges = atomic_get(&mFactoryResetEdges);
+    if (edges != mFactoryResetObservedEdges) {
+        mFactoryResetObservedEdges = edges;
+        mFactoryResetButton.Edge(nowMs);
+    }
+    const int pressed = gpio_pin_get_dt(&kFactoryResetPin);
+    bool reset = false;
+    if (pressed < 0) mFactoryResetButton.Cancel();
+    else reset = mFactoryResetButton.Timer(pressed > 0, nowMs);
+    const uint32_t delayMs = mFactoryResetButton.NextDelayMs(nowMs);
+    irq_unlock(key);
+
+    k_timer_stop(&mFactoryResetTimer);
+    if (pressed < 0) {
+        LOG_ERR("Cannot read factory reset button: %d", pressed);
+    } else if (reset) {
+        mFactoryResetStarted = true;
+        gpio_pin_interrupt_configure_dt(&kFactoryResetPin, GPIO_INT_DISABLE);
+        LOG_INF("Factory reset: erasing Matter fabrics, operational settings and Thread network");
+        // SDK reset clears operational storage and reboots. Factory data (or
+        // compile-time onboarding credentials) is retained for the next pairing.
+        StackLock lock;
+        Server::GetInstance().ScheduleFactoryReset();
+    } else if (delayMs != FactoryResetButton::kNoTimer) {
+        k_timer_start(&mFactoryResetTimer, K_MSEC(delayMs), K_NO_WAIT);
     }
 }
 

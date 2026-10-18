@@ -7,10 +7,15 @@
 	aliases {
 		mailbox-motion = &mailbox_motion;
 		mailbox-battery = &mailbox_battery;
+		mailbox-factory-reset = &mailbox_factory_reset;
 	};
 	mailbox_motion: mailbox-motion {
 		compatible = "mailbox,gpio-signal";
 		gpios = <&gpio0 28 GPIO_ACTIVE_HIGH>; /* D2, BMA400 INT1 */
+	};
+	mailbox_factory_reset: mailbox-factory-reset {
+		compatible = "mailbox,gpio-signal";
+		gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* D0, switch to GND */
 	};
 	mailbox_battery: mailbox-battery {
 		compatible = "voltage-divider";
@@ -57,8 +62,8 @@
 };
 
 &gpio0 {
-	/* INT1 uses low-power GPIO SENSE/PORT events instead of an IN channel. */
-	sense-edge-mask = <0x10000000>;
+	/* INT1 and reset use low-power GPIO SENSE/PORT events, not IN channels. */
+	sense-edge-mask = <0x10000004>;
 	rgb_off {
 		gpio-hog;
 		gpios = <6 GPIO_ACTIVE_HIGH>, <26 GPIO_ACTIVE_HIGH>, <30 GPIO_ACTIVE_HIGH>;

@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 import re
 import struct
 import sys
 
-from nordic import BOARDS, build_directory
+from nordic import BOARDS, ROOT, build_directory
+from provisioning import config_text, load as load_provisioning
 
 APPLICATION_REGIONS = {'nrf52840': (0x27000, 0xEC000), 'nrf54l15': (0, 0x170000)}
 RAM_REGION = (0x20000000, 0x20040000)
@@ -17,14 +19,35 @@ NRF52840_UICR = {
     0x10001204: 'PSELRESET[1]',
     0x10001208: 'APPROTECT',
 }
-# Match the documented development credentials. The discriminator is a Kconfig hex symbol:
-# bare "3840" means 0x3840, not decimal 3840, in the compiled firmware.
-PAIRING_CONFIG = {
-    'CONFIG_CHIP_DEVICE_VENDOR_ID': (65521, 10),
-    'CONFIG_CHIP_DEVICE_PRODUCT_ID': (32772, 10),
-    'CONFIG_CHIP_DEVICE_DISCRIMINATOR': (3840, 16),
-    'CONFIG_CHIP_DEVICE_SPAKE2_PASSCODE': (20202021, 10),
-}
+
+
+def pairing_configuration(args: argparse.Namespace) -> dict[str, str]:
+    """Read the requested label, independently of the generated build headers."""
+    if getattr(args, 'default_provisioning', False):
+        return configuration(ROOT / 'config/default-provisioning.conf') | {
+            'CONFIG_CHIP_DEVICE_VENDOR_ID': '65521',
+            'CONFIG_CHIP_DEVICE_PRODUCT_ID': '32772',
+        }
+    path = (args.provisioning.expanduser().resolve() if getattr(args, 'provisioning', None) else
+            ROOT / 'provisioning' / args.board / 'provisioning.json')
+    values = {}
+    for line in config_text(load_provisioning(path)).splitlines():
+        if line.startswith('CONFIG_') and '=' in line:
+            name, value = line.split('=', 1)
+            values[name] = value
+    return values | {'CONFIG_CHIP_DEVICE_VENDOR_ID': '65521', 'CONFIG_CHIP_DEVICE_PRODUCT_ID': '32772'}
+
+
+def check_pairing(actual: dict[str, str], expected: dict[str, str], *, compiled: bool = False) -> None:
+    """Compare PIN, discriminator, salt, iterations and verifier as one identity."""
+    for name, value in expected.items():
+        raw = actual.get(name)
+        require(raw is not None, f'{name}: missing pairing definition')
+        if value.startswith('"'):
+            require(json.loads(raw) == json.loads(value), f'{name}: differs from the selected provisioning')
+        else:
+            radix = 0 if compiled or name != 'CONFIG_CHIP_DEVICE_DISCRIMINATOR' else 16
+            require(int(raw, radix) == int(value, 0), f'{name}: differs from the selected provisioning')
 
 
 def require(condition: bool, message: str) -> None:
@@ -88,7 +111,8 @@ def check_application_partition(config: dict[str, str], board: str,
 
 
 def check_configuration(config: dict[str, str], args: argparse.Namespace,
-                        devicetree_header: Path | None = None) -> None:
+                        devicetree_header: Path | None = None,
+                        pairing: dict[str, str] | None = None) -> None:
     usb_console = getattr(args, 'usb_console', False)
     console = args.console or usb_console
     expected = {
@@ -96,6 +120,8 @@ def check_configuration(config: dict[str, str], args: argparse.Namespace,
         'CONFIG_CHIP': 'y',
         'CONFIG_CHIP_FACTORY_DATA': 'n',
         'CONFIG_CHIP_FACTORY_DATA_NONE': 'y',
+        'CONFIG_CHIP_FACTORY_RESET_ERASE_SETTINGS': 'n',
+        'CONFIG_REBOOT': 'y',
         'CONFIG_CHIP_ENABLE_ICD_SUPPORT': 'y',
         'CONFIG_OPENTHREAD_MTD_SED': 'y',
         'CONFIG_USE_DT_CODE_PARTITION': 'y',
@@ -143,16 +169,7 @@ def check_configuration(config: dict[str, str], args: argparse.Namespace,
         # Zephyr omits some symbols whose dependencies are disabled entirely.
         require(config.get(name, 'n') == value,
                 f'{name}: expected {value}, found {config.get(name, "missing")}')
-    for name, (value, radix) in PAIRING_CONFIG.items():
-        raw = config.get(name)
-        require(raw is not None, f'{name}: missing pairing configuration')
-        actual = int(raw, radix)
-        if name == 'CONFIG_CHIP_DEVICE_DISCRIMINATOR':
-            require(0 <= actual <= 0xFFF,
-                    f'{name}: {raw} means {actual:#x}, outside the 12-bit Matter range; '
-                    'use 0x0F00 for decimal 3840')
-        require(actual == value,
-                f'{name}: expected documented pairing value {value}, found {actual}')
+    check_pairing(config, pairing if pairing is not None else pairing_configuration(args))
     require(int(config['CONFIG_SRAM_BASE_ADDRESS'], 0) == RAM_REGION[0], 'Unexpected SRAM base address')
     require(int(config['CONFIG_FLASH_BASE_ADDRESS'], 0) == 0, 'Unexpected flash base address')
     check_application_partition(config, args.board, devicetree_header)
@@ -160,15 +177,11 @@ def check_configuration(config: dict[str, str], args: argparse.Namespace,
         require(config.get('CONFIG_BUILD_OUTPUT_UF2') == 'y', 'nRF52840 UF2 generation is disabled')
 
 
-def check_compiled_pairing(path: Path) -> None:
+def check_compiled_pairing(path: Path, pairing: dict[str, str]) -> None:
     """Check the C literals actually compiled, including stale generated headers."""
     header = path.read_text()
-    for name, (expected, _) in PAIRING_CONFIG.items():
-        match = re.search(rf'^#define\s+{re.escape(name)}\s+(\S+)\s*$', header, re.MULTILINE)
-        require(match is not None, f'{name}: missing compiled pairing definition in {path.name}')
-        actual = int(match.group(1), 0)
-        require(actual == expected,
-                f'{name}: compiled value {actual:#x} does not match pairing value {expected:#x}')
+    values = dict(re.findall(r'^#define\s+(CONFIG_\w+)\s+([^\n]+)$', header, re.MULTILINE))
+    check_pairing(values, pairing, compiled=True)
 
 
 def read_hex(path: Path) -> dict[int, int]:
@@ -276,11 +289,16 @@ def main() -> None:
     console.add_argument('--usb-console', action='store_true')
     parser.add_argument('--battery', action='store_true')
     parser.add_argument('--build-dir', type=Path)
+    provisioning = parser.add_mutually_exclusive_group()
+    provisioning.add_argument('--provisioning', type=Path, help='custom provisioning.json used for this build')
+    provisioning.add_argument('--default-provisioning', action='store_true',
+                              help='require the published development credentials')
     args = parser.parse_args()
     build = build_directory(args) / 'zephyr'
     config = configuration(build / '.config')
-    check_configuration(config, args, build / 'include/generated/zephyr/devicetree_generated.h')
-    check_compiled_pairing(build / 'include/generated/zephyr/autoconf.h')
+    pairing = pairing_configuration(args)
+    check_configuration(config, args, build / 'include/generated/zephyr/devicetree_generated.h', pairing)
+    check_compiled_pairing(build / 'include/generated/zephyr/autoconf.h', pairing)
     image = read_hex(build / 'zephyr.hex')
     check_flash(image, args.board, 'HEX')
     ram = check_elf_ram(build / 'zephyr.elf', config)
