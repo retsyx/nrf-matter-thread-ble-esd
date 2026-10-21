@@ -1,8 +1,8 @@
 {
   "availability_checked_on": "",
   "metadata_verified_on": "2026-10-18",
-  "board": "board-nRF52840: XIAO nRF52840 direct SMD carrier, 30 x 42 mm",
-  "purchasing_notes": "Per-carrier assembly quantities; select only standard XIAO nRF52840 SKU 102010448 with unsoldered headers. All 16 module contacts are soldered directly. Module-specific underside battery pattern. External battery is optional. Carrier J1 polarity is pin 1 GND / pin 2 VBAT. Stock, prices, and availability have not been checked. Mounting holes are PCB features, not purchased parts. H1-H6 and TP1/TP2 are unpurchased PCB features, excluded from purchasing BOM and placement files.",
+  "board": "board-nRF52840: XIAO nRF52840 direct SMD carrier, 22 x 38 mm",
+  "purchasing_notes": "Per-carrier assembly quantities; select only standard XIAO nRF52840 SKU 102010448 with unsoldered headers. All 16 module contacts are soldered directly. Module-specific underside battery pattern. External battery is optional. Carrier J1 polarity is pin 1 GND / pin 2 VBAT. Stock, prices, and availability have not been checked. Mounting holes are PCB features, not purchased parts. H1-H8 and TP1/TP2 are unpurchased PCB features, excluded from purchasing BOM and placement files. Assemble U1 and SW1 on the front and U2/R1/R2/C1-C3 on the back; use both side-specific placement exports.",
   "parts": [
     {
       "references": [
@@ -19,8 +19,8 @@
       "supplier_part_number": "102010448",
       "purchase_url": "https://www.seeedstudio.com/Seeed-XIAO-BLE-nRF52840-p-5201.html",
       "stock_on_check": "",
-      "assembly": "Direct SMD reflow; 14 edge contacts + underside BAT+/19 and GND/20",
-      "notes": "Fit ONE standard Seeed Studio XIAO nRF52840, SKU 102010448, with unsoldered headers. Directly solder all 14 castellated edge lands plus the two underside battery contacts: BAT+ pin 19, battery GND pin 20. This carrier is specific to the nRF52840 underside geometry. Use the matching firmware build. Sense, Plus and other XIAO variants require a separate footprint/assembly review before substitution. Keep carrier components outside module outline, unintended copper insulated, and both battery lands registered to the vendor geometry. Confirm delivered module revision, underside planarity, reflow process, and hidden battery-joint quality on prototypes. Module internal divider supplies firmware battery measurement. Pin 14 VBUS has no carrier connection. Supplier stock and pricing have not been checked.",
+      "assembly": "Direct SMD reflow; 14 edge contacts + underside BAT+/19 and GND/20; front side",
+      "notes": "Fit ONE standard Seeed Studio XIAO nRF52840, SKU 102010448, with unsoldered headers. Directly solder all 14 castellated edge lands plus the two underside battery contacts: BAT+ pin 19, battery GND pin 20. This carrier is specific to the nRF52840 underside geometry. Use the matching firmware build. Sense, Plus and other XIAO variants require a separate footprint/assembly review before substitution. Keep front-side carrier components outside the module outline; the backside sensor island is on the opposite side of the carrier, unintended copper insulated, and both battery lands registered to the vendor geometry. Confirm delivered module revision, underside planarity, reflow process, and hidden battery-joint quality on prototypes. Module internal divider supplies firmware battery measurement. Pin 14 VBUS has no carrier connection. Supplier stock and pricing have not been checked.",
       "on_board": true,
       "purchased": true,
       "properties": {
@@ -28,7 +28,8 @@
         "Contacts": "14 edges + 2 underside battery lands",
         "Battery positive contact": "Pin 19",
         "Battery negative contact": "Pin 20",
-        "Supported module": "Standard XIAO nRF52840 102010448"
+        "Supported module": "Standard XIAO nRF52840 102010448",
+        "Assembly side": "Front"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -53,12 +54,13 @@
       "supplier_part_number": "C437655",
       "purchase_url": "https://www.lcsc.com/product-detail/C437655.html",
       "stock_on_check": "",
-      "assembly": "SMD reflow",
+      "assembly": "SMD reflow; back side",
       "notes": "Bare Bosch BMA400 LGA-12, 2 x 2 mm; align pin 1. Tie SDO to GND for I2C address 0x14 and CSB to 3V3; INT1 to XIAO D2, SDA to D4, SCL to D5. VDD and VDDIO use the module always-available 3V3 rail. LCSC purchasing example retained; authorization/franchise status and inventory are not claimed.",
       "on_board": true,
       "purchased": true,
       "properties": {
-        "I2C address": "0x14"
+        "I2C address": "0x14",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -111,7 +113,7 @@
       "supplier_part_number": "SW1020CT-ND",
       "purchase_url": "https://www.digikey.com/en/products/detail/aratas-formerly-omron-components/B3U-1000P/1534338",
       "stock_on_check": "",
-      "assembly": "SMD reflow",
+      "assembly": "SMD reflow; front side",
       "notes": "Top-actuated SPST-NO momentary factory-reset switch, no locating boss or separate ground terminal; 3.0 x 2.5 mm body, 1.6 mm actuator height, nominal 1.5 N force. Carrier terminal 1 -> FACTORY_RESET / XIAO D0 (P0.02); terminal 2 -> GND. Firmware uses the internal GPIO pull-up and low-power sensing; no external resistor/capacitor is fitted. Hold 5 seconds for Matter/Thread state erasure and reboot with the same provisioned Matter credentials. Manufacturer datasheet A162-E1-07 page 2 recommended land dimensions were checked against local footprint adapted from KiCad 10.0.6: two nominal 0.8 x 1.7 mm lands at +/-1.7 mm (4.2 mm outer span / 2.6 mm inner gap). 10 uA at 1 V minimum applicable load (reference), 5 ms maximum bounce, 100 Mohm minimum insulation resistance. Supplier listing was verified; stock and pricing are not claimed. Do not wash after soldering (manufacturer restriction).",
       "on_board": true,
       "purchased": true,
@@ -120,7 +122,8 @@
         "GPIO": "P0.02",
         "Operation": "Hold 5 s for factory reset",
         "Body": "3.0 x 2.5 mm",
-        "Actuator height": "1.6 mm"
+        "Actuator height": "1.6 mm",
+        "Assembly side": "Front"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-18",
@@ -146,13 +149,14 @@
       "supplier_part_number": "P10.0KHCT-ND",
       "purchase_url": "https://www.digikey.com/en/products/detail/panasonic-industry/ERJ-3EKF1002V/198102",
       "stock_on_check": "",
-      "assembly": "SMD 0603",
+      "assembly": "SMD 0603; back side",
       "notes": "10 kohm, 1%, 0.1 W, 0603 (1608 metric); I2C SDA/SCL pullups to 3V3. No inventory or price claim.",
       "on_board": true,
       "purchased": true,
       "properties": {
         "Tolerance": "1%",
-        "Power": "0.1W"
+        "Power": "0.1W",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -178,14 +182,15 @@
       "supplier_part_number": "399-C0603C104K5RACTUCT-ND",
       "purchase_url": "https://www.digikey.com/en/products/detail/kemet/C0603C104K5RACTU/1465623",
       "stock_on_check": "",
-      "assembly": "SMD 0603",
+      "assembly": "SMD 0603; back side",
       "notes": "100nF, 50V, X7R, 10%, 0603 (1608 metric); C1 VDDIO bypass and C2 VDD bypass.",
       "on_board": true,
       "purchased": true,
       "properties": {
         "Tolerance": "10%",
         "Voltage": "50V",
-        "Dielectric": "X7R"
+        "Dielectric": "X7R",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -210,14 +215,15 @@
       "supplier_part_number": "399-C0603C105K4RACTUCT-ND",
       "purchase_url": "https://www.digikey.com/en/products/detail/kemet/C0603C105K4RACTU/2199788",
       "stock_on_check": "",
-      "assembly": "SMD 0603",
+      "assembly": "SMD 0603; back side",
       "notes": "1uF, 16V, X7R, 10%, 0603 (1608 metric); 3V3 bulk bypass.",
       "on_board": true,
       "purchased": true,
       "properties": {
         "Tolerance": "10%",
         "Voltage": "16V",
-        "Dielectric": "X7R"
+        "Dielectric": "X7R",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -263,9 +269,11 @@
     {
       "references": [
         "H1",
-        "H2"
+        "H2",
+        "H7",
+        "H8"
       ],
-      "quantity": 2,
+      "quantity": 4,
       "value": "2.2mm mounting hole",
       "footprint": "Board:MountingHole_2.2mm_M2",
       "manufacturer": "",
@@ -277,7 +285,7 @@
       "purchase_url": "",
       "stock_on_check": "",
       "assembly": "PCB feature only",
-      "notes": "PCB holes, not purchased components; enclosure-specific M2 hardware is not included.",
+      "notes": "Four 2.2 mm NPTH corner mounting holes, H1/H2 at (52,85)/(68,85) and H7/H8 at (52,53)/(68,53) mm. Their 16 x 32 mm support pattern surrounds the board center. PCB features, not purchased components; enclosure-specific M2 hardware is not included.",
       "on_board": true,
       "purchased": false,
       "properties": {},

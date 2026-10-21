@@ -13,6 +13,13 @@ are included; each board's assembly notes explain the exact
 land patterns, exclusions and underside programming access. The original MG24
 carrier itself is not a Nordic footprint.
 
+Each 22 × 38 mm carrier centers the XIAO between the upper and lower mounting
+rows while keeping USB at the left edge. Four 2.2 mm M2 mounting holes at
+opposing corners surround the board center. The BMA400 is
+centered on the underside with its pull-ups and capacitors nearby; the XIAO
+module and factory-reset switch are on the front. Assembly requires both sides;
+mounting spacers must clear the underside components.
+
 | Connection | XIAO header | nRF52840 GPIO | nRF54L15 GPIO |
 | --- | --- | --- | --- |
 | BMA400 VDD/VDDIO | 3V3 | 3.3 V rail | 3.3 V rail |

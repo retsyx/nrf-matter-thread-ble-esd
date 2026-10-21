@@ -1,4 +1,4 @@
-(kicad_sch (version 20250114) (generator "eeschema") (generator_version "9.0") (uuid "c5032c3c-d00f-5aaf-a428-6cb786e83767") (paper "A4") (title_block (title "XIAO nRF52840 / BMA400 SMD Carrier") (date "2026-10-18") (rev "B") (company "nrf-matter-thread-ble-esd") (comment 1 "2-layer direct SMD carrier; protected 1S battery; module-specific underside BAT lands"))
+(kicad_sch (version 20250114) (generator "eeschema") (generator_version "9.0") (uuid "c5032c3c-d00f-5aaf-a428-6cb786e83767") (paper "A4") (title_block (title "XIAO nRF52840 / BMA400 SMD Carrier") (date "2026-10-20") (rev "C") (company "nrf-matter-thread-ble-esd") (comment 1 "2-layer direct SMD carrier; protected 1S battery; module-specific underside BAT lands"))
 (lib_symbols (symbol "Board:SW_Push"
 		(pin_numbers
 			(hide yes)

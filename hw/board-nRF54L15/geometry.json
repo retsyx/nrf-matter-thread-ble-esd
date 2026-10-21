@@ -2,7 +2,7 @@
   "schema_version": 1,
   "board": "board-nRF54L15",
   "footprint": "XIAO_nRF54L15_SMD",
-  "coordinate_frame": "USB-up top view; origin at physical module through-hole header-grid center; +Y toward antenna; all geometry local mm",
+  "coordinate_frame": "Local module frame: USB-up top view; origin at physical module through-hole header-grid center; +Y toward antenna; all geometry local mm unless explicitly marked carrier coordinates. The carrier placement rotates this frame +90 degrees in KiCad: carrier (X,Y) = (59.5 + local Y, 69 - local X) mm.",
   "module": {
     "name": "Seeed Studio XIAO nRF54L15",
     "pcb_size_mm": [
@@ -16,9 +16,9 @@
       72.836
     ],
     "placement": {
-      "x_mm": 64.0,
-      "y_mm": 60.5,
-      "rotation_deg": 0
+      "x_mm": 59.5,
+      "y_mm": 69.0,
+      "rotation_deg": 90
     },
     "source_board_thickness_mm": 1.6,
     "pcb_bounds_mm": [
@@ -26,7 +26,8 @@
       -10.541,
       8.89,
       10.414
-    ]
+    ],
+    "axis_centering_note": "USB approaches along the carrier X axis from the left. U1 is centered along the perpendicular Y axis at Y=69 mm, matching the carrier geometric center; its X placement retains left-edge USB access."
   },
   "edge_land_basis": "2.75x2.0mm SMD lands at x=+/-8.0825 from supplied Seeed nRF54L15 footprint; nRF52840 supplied lands differ only by 0.0275mm common X shift.",
   "edge_lands": [
@@ -1470,14 +1471,14 @@
     "contact_form": "SPST-NO momentary, top actuated",
     "footprint": "Board:SW_SPST_B3U-1000P",
     "carrier_placement": {
-      "x_mm": 51.6,
-      "y_mm": 53.2,
-      "rotation_deg": 180,
+      "x_mm": 60.0,
+      "y_mm": 55.5,
+      "rotation_deg": 0,
       "coordinate_frame": "Absolute carrier KiCad coordinates in mm, front side"
     },
     "module_local_center_mm": [
-      -12.4,
-      -7.3
+      13.5,
+      0.5
     ],
     "body_size_mm": [
       3.0,
@@ -1491,21 +1492,21 @@
         "module_edge_pad": "1 / D0",
         "mcu_gpio": "P1.04",
         "carrier_center_mm": [
-          53.3,
-          53.2
+          58.3,
+          55.5
         ]
       },
       {
         "pad": "2",
         "net": "/GND",
         "carrier_center_mm": [
-          49.9,
-          53.2
+          61.7,
+          55.5
         ]
       }
     ],
-    "routing": "0.25 mm F.Cu D0 trace; GND F.Cu trace to 0.6/0.3 mm through via at (50.6,55.3), connected to refilled B.Cu ground plane.",
-    "placement_note": "Top access in USB-end left edge strip, outside U1 courtyard and the antenna/NFC keepout; carrier outline remains 30 x 42 mm.",
+    "routing": "0.25 mm chamfered F.Cu D0 trace from SW1 pad 1 at (58.3,55.5), below the H7 screw-head keepout to the x49.5 mm left-edge routing strip, then to U1 D0 at (51.88,77.0825). GND pad 2 at (61.7,55.5) routes to a 0.6/0.3 mm through via at (61.7,56.8), connected to the refilled B.Cu ground plane.",
+    "placement_note": "Top access in the upper-center carrier area between H7/H8 and above U1 courtyard, outside the antenna/NFC keepout. Carrier outline is 22 x 38 mm.",
     "electrical_note": "Internal GPIO pull-up only; normally open switch adds no intended DC conduction path while released. Actual leakage and standby current require prototype measurement.",
     "behavior": "Hold 5 seconds for factory reset; Matter/Thread user state is erased, provisioned Matter setup credentials are retained.",
     "datasheet_url": "https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf",
@@ -1516,5 +1517,279 @@
       "source": "Installed KiCad 10.0.6 Button_Switch_SMD.3dshapes/SW_SPST_B3U-1000P.step",
       "sha256": "4b5ee4da023d76030db22a90f5835f3691d5e4e9fc41b3f37b2c5922c65d307b"
     }
-  }
+  },
+  "carrier": {
+    "coordinate_frame": "Absolute KiCad carrier coordinates in mm; top view; +X right, +Y down",
+    "outline_bounds_mm": [
+      49.0,
+      50.0,
+      71.0,
+      88.0
+    ],
+    "size_mm": [
+      22.0,
+      38.0
+    ],
+    "center_mm": [
+      60.0,
+      69.0
+    ],
+    "revision": "C",
+    "usb_edge_x_mm": 48.959,
+    "usb_note": "The module is rotated 90 degrees with USB at the carrier left edge. The vendor PCB USB edge is at x=48.959 mm, 0.041 mm beyond the carrier edge; the nominal footprint body edge is x=49.0225 mm.",
+    "mounting_support_span_mm": [
+      16.0,
+      32.0
+    ],
+    "drill_and_placement_origin_mm": [
+      49.0,
+      88.0
+    ],
+    "area_mm2": 836.0,
+    "previous_size_mm": [
+      30.0,
+      42.0
+    ],
+    "area_reduction_percent": 33.65
+  },
+  "accelerometer": {
+    "reference": "U2",
+    "value": "BMA400",
+    "footprint": "Board:LGA-12_2x2mm_P0.5mm",
+    "carrier_placement": {
+      "x_mm": 60.0,
+      "y_mm": 69.0,
+      "rotation_deg": 0,
+      "coordinate_frame": "Absolute carrier KiCad coordinates in mm, top-view X right and Y down; component mounted on back side",
+      "side": "B.Cu"
+    },
+    "module_local_center_mm": [
+      0.0,
+      0.5
+    ],
+    "placement_note": "Package center coincides with the geometric center of the compact 22 x 38 mm carrier. U2 and its two decoupling capacitors are mounted on the back beneath U1, outside all module probe holes and the antenna keepout. The module antenna and underside-contact keepouts move with U1; the BMA400 central no-track/no-via rule area remains centered on U2 and applies to both copper layers.",
+    "decoupling": "C1 VDDIO at (56.5,68.75) and C2 VDD at (63.5,71.5) are on B.Cu beside U2. U2 ground lands connect solidly to B.Cu ground pours. Two F.Cu bridges join the ground islands: (61.15,69.05) to (61.15,70.5), and (58.6,72.4) to (60.7,72.4), with through vias at both ends."
+  },
+  "mounting_holes": [
+    {
+      "ref": "H1",
+      "carrier_center_mm": [
+        52.0,
+        85.0
+      ],
+      "drill_diameter_mm": 2.2,
+      "hardware": "M2",
+      "plated": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true,
+      "screw_head_clearance_radius_mm": 2.45,
+      "copper_keepout_layers": [
+        "F.Cu",
+        "B.Cu"
+      ]
+    },
+    {
+      "ref": "H2",
+      "carrier_center_mm": [
+        68.0,
+        85.0
+      ],
+      "drill_diameter_mm": 2.2,
+      "hardware": "M2",
+      "plated": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true,
+      "screw_head_clearance_radius_mm": 2.45,
+      "copper_keepout_layers": [
+        "F.Cu",
+        "B.Cu"
+      ]
+    },
+    {
+      "ref": "H7",
+      "carrier_center_mm": [
+        52.0,
+        53.0
+      ],
+      "drill_diameter_mm": 2.2,
+      "hardware": "M2",
+      "plated": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true,
+      "screw_head_clearance_radius_mm": 2.45,
+      "copper_keepout_layers": [
+        "F.Cu",
+        "B.Cu"
+      ]
+    },
+    {
+      "ref": "H8",
+      "carrier_center_mm": [
+        68.0,
+        53.0
+      ],
+      "drill_diameter_mm": 2.2,
+      "hardware": "M2",
+      "plated": false,
+      "board_only": true,
+      "exclude_from_bom": true,
+      "exclude_from_position_files": true,
+      "screw_head_clearance_radius_mm": 2.45,
+      "copper_keepout_layers": [
+        "F.Cu",
+        "B.Cu"
+      ]
+    }
+  ],
+  "routing_validation": {
+    "checked_on": "2026-10-20",
+    "kicad_version": "10.0.6",
+    "drc_violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0,
+    "right_angle_copper_joins": 0,
+    "copper_segments": 75,
+    "audit_command": "python3 scripts/check-pcb-layout.py hw/board-nRF54L15/board-nRF54L15.kicad_pcb",
+    "note": "Copper bends use horizontal, vertical and 45-degree segments. The audit rejects perpendicular same-net/layer joins, including T joins and joins at pads or vias. All mounting screw-head envelopes are protected by both-layer track/via/zone-fill keepouts."
+  },
+  "mounting_screw_keepouts": {
+    "coordinate_frame": "Absolute carrier KiCad coordinates, mm",
+    "references": [
+      "H1",
+      "H2",
+      "H7",
+      "H8"
+    ],
+    "minimum_radius_mm": 2.45,
+    "shape": "32-sided polygon circumscribed around a 2.45 mm radius circle",
+    "layers": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "forbid": [
+      "tracks",
+      "vias",
+      "zone_fills"
+    ],
+    "note": "Four corners at x52/68 and y53/85 support opposite board ends. Screw-head envelopes remain clear of component courtyards; existing H3-H6 are probe access and are not mounting holes."
+  },
+  "sensor_center_keepout": {
+    "carrier_center_mm": [
+      60.0,
+      69.0
+    ],
+    "bounds_mm": [
+      59.55,
+      68.55,
+      60.45,
+      69.45
+    ],
+    "layers": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "forbid": [
+      "tracks",
+      "vias"
+    ],
+    "allow": [
+      "pads",
+      "zone_fills"
+    ],
+    "note": "Preserved 0.9 x 0.9 mm center feature, extended to both copper layers for the backside sensor."
+  },
+  "assembly": {
+    "front_smd_references": [
+      "U1",
+      "SW1"
+    ],
+    "back_smd_references": [
+      "U2",
+      "R1",
+      "R2",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "manual_through_hole_references": [
+      "J1"
+    ],
+    "note": "Two-sided SMD assembly. Use separate front and back placement data and stencil/paste layers; module probe access and board mounting holes are not fitted components."
+  },
+  "back_component_placements": [
+    {
+      "reference": "U2",
+      "x_mm": 60.0,
+      "y_mm": 69.0,
+      "rotation_deg": 0,
+      "side": "B.Cu"
+    },
+    {
+      "reference": "C1",
+      "x_mm": 56.5,
+      "y_mm": 68.75,
+      "rotation_deg": 180,
+      "side": "B.Cu"
+    },
+    {
+      "reference": "C2",
+      "x_mm": 63.5,
+      "y_mm": 71.5,
+      "rotation_deg": 0,
+      "side": "B.Cu"
+    },
+    {
+      "reference": "C3",
+      "x_mm": 65.0,
+      "y_mm": 74.0,
+      "rotation_deg": 180,
+      "side": "B.Cu"
+    },
+    {
+      "reference": "R1",
+      "x_mm": 57.5,
+      "y_mm": 71.25,
+      "rotation_deg": 0,
+      "side": "B.Cu"
+    },
+    {
+      "reference": "R2",
+      "x_mm": 57.5,
+      "y_mm": 74.0,
+      "rotation_deg": 0,
+      "side": "B.Cu"
+    }
+  ],
+  "battery_connector_placement": {
+    "reference": "J1",
+    "x_mm": 59.0,
+    "y_mm": 81.0,
+    "rotation_deg": 0,
+    "side": "F.Cu",
+    "opening": "Toward bottom carrier edge at Y=88 mm",
+    "polarity": "Pin 1 GND, pin 2 VBAT"
+  },
+  "voltage_test_pad_placements": [
+    {
+      "reference": "TP1",
+      "net": "/+3V3",
+      "carrier_center_mm": [
+        67.5,
+        81.0
+      ],
+      "side": "B.Cu"
+    },
+    {
+      "reference": "TP2",
+      "net": "/GND",
+      "carrier_center_mm": [
+        67.5,
+        79.0
+      ],
+      "side": "B.Cu"
+    }
+  ]
 }

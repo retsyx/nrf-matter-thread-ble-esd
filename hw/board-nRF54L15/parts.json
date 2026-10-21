@@ -28,7 +28,8 @@
         "Contacts": "14 edges + 2 underside battery lands",
         "Battery positive contact": "Pin 31",
         "Battery negative contact": "Pin 32",
-        "Supported module": "Standard XIAO nRF54L15 101991421"
+        "Supported module": "Standard XIAO nRF54L15 101991421",
+        "Assembly side": "Front"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -36,7 +37,8 @@
       "in_bom": true,
       "in_positions": true,
       "exclude_from_bom": false,
-      "exclude_from_position_files": false
+      "exclude_from_position_files": false,
+      "assembly_side": "Front"
     },
     {
       "references": [
@@ -58,7 +60,8 @@
       "on_board": true,
       "purchased": true,
       "properties": {
-        "I2C address": "0x14"
+        "I2C address": "0x14",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -66,7 +69,8 @@
       "in_bom": true,
       "in_positions": true,
       "exclude_from_bom": false,
-      "exclude_from_position_files": false
+      "exclude_from_position_files": false,
+      "assembly_side": "Back"
     },
     {
       "references": [
@@ -120,7 +124,8 @@
         "GPIO": "P1.04",
         "Operation": "Hold 5 s for factory reset",
         "Body": "3.0 x 2.5 mm",
-        "Actuator height": "1.6 mm"
+        "Actuator height": "1.6 mm",
+        "Assembly side": "Front"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-18",
@@ -128,7 +133,8 @@
       "in_bom": true,
       "in_positions": true,
       "exclude_from_bom": false,
-      "exclude_from_position_files": false
+      "exclude_from_position_files": false,
+      "assembly_side": "Front"
     },
     {
       "references": [
@@ -152,7 +158,8 @@
       "purchased": true,
       "properties": {
         "Tolerance": "1%",
-        "Power": "0.1W"
+        "Power": "0.1W",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -160,7 +167,8 @@
       "in_bom": true,
       "in_positions": true,
       "exclude_from_bom": false,
-      "exclude_from_position_files": false
+      "exclude_from_position_files": false,
+      "assembly_side": "Back"
     },
     {
       "references": [
@@ -185,7 +193,8 @@
       "properties": {
         "Tolerance": "10%",
         "Voltage": "50V",
-        "Dielectric": "X7R"
+        "Dielectric": "X7R",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -193,7 +202,8 @@
       "in_bom": true,
       "in_positions": true,
       "exclude_from_bom": false,
-      "exclude_from_position_files": false
+      "exclude_from_position_files": false,
+      "assembly_side": "Back"
     },
     {
       "references": [
@@ -217,7 +227,8 @@
       "properties": {
         "Tolerance": "10%",
         "Voltage": "16V",
-        "Dielectric": "X7R"
+        "Dielectric": "X7R",
+        "Assembly side": "Back"
       },
       "availability_checked_on": "",
       "metadata_verified_on": "2026-10-07",
@@ -225,7 +236,8 @@
       "in_bom": true,
       "in_positions": true,
       "exclude_from_bom": false,
-      "exclude_from_position_files": false
+      "exclude_from_position_files": false,
+      "assembly_side": "Back"
     },
     {
       "references": [
@@ -263,9 +275,11 @@
     {
       "references": [
         "H1",
-        "H2"
+        "H2",
+        "H7",
+        "H8"
       ],
-      "quantity": 2,
+      "quantity": 4,
       "value": "2.2mm mounting hole",
       "footprint": "Board:MountingHole_2.2mm_M2",
       "manufacturer": "",
@@ -277,7 +291,7 @@
       "purchase_url": "",
       "stock_on_check": "",
       "assembly": "PCB feature only",
-      "notes": "PCB holes, not purchased components; enclosure-specific M2 hardware is not included.",
+      "notes": "Four 2.2 mm NPTH PCB mounting holes for enclosure-specific M2 hardware, at carrier coordinates (52,85), (68,85), (52,53) and (68,53) mm. Opposing rows support both ends of the compact 22 x 38 mm board with a 16 x 32 mm mounting span. Both copper layers reserve at least 2.45 mm radius around each screw head. Not purchased components; mounting hardware is not included.",
       "on_board": true,
       "purchased": false,
       "properties": {},

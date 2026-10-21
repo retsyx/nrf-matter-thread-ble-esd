@@ -2,7 +2,7 @@
   "schema_version": 1,
   "board": "board-nRF52840",
   "footprint": "XIAO_nRF52840_SMD",
-  "coordinate_frame": "USB-up top view; origin at physical module through-hole header-grid center; +Y toward antenna; all geometry local mm",
+  "coordinate_frame": "USB-up module-local top view; origin at physical module through-hole header-grid center; +Y toward antenna; all geometry local mm unless identified as carrier coordinates. Carrier placement rotates module-local coordinates by KiCad rotation_deg (positive counterclockwise on screen).",
   "module": {
     "name": "Seeed Studio XIAO nRF52840",
     "pcb_size_mm": [
@@ -16,9 +16,9 @@
       105.0036
     ],
     "placement": {
-      "x_mm": 64.0,
-      "y_mm": 60.5,
-      "rotation_deg": 0
+      "x_mm": 59.5,
+      "y_mm": 69.0,
+      "rotation_deg": 90
     },
     "source_board_thickness_mm": 1.6,
     "pcb_bounds_mm": [
@@ -834,14 +834,14 @@
     "contact_form": "SPST-NO momentary, top actuated",
     "footprint": "Board:SW_SPST_B3U-1000P",
     "carrier_placement": {
-      "x_mm": 51.6,
-      "y_mm": 53.2,
-      "rotation_deg": 180,
+      "x_mm": 60.0,
+      "y_mm": 55.5,
+      "rotation_deg": 0,
       "coordinate_frame": "Absolute carrier KiCad coordinates in mm, front side"
     },
     "module_local_center_mm": [
-      -12.4,
-      -7.3
+      13.5,
+      0.5
     ],
     "body_size_mm": [
       3.0,
@@ -855,21 +855,21 @@
         "module_edge_pad": "1 / D0",
         "mcu_gpio": "P0.02",
         "carrier_center_mm": [
-          53.3,
-          53.2
+          58.3,
+          55.5
         ]
       },
       {
         "pad": "2",
         "net": "/GND",
         "carrier_center_mm": [
-          49.9,
-          53.2
+          61.7,
+          55.5
         ]
       }
     ],
-    "routing": "0.25 mm F.Cu D0 trace; GND F.Cu trace to 0.6/0.3 mm through via at (50.6,55.3), connected to refilled B.Cu ground plane.",
-    "placement_note": "Top access in USB-end left edge strip, outside U1 courtyard and the antenna/NFC keepout; carrier outline remains 30 x 42 mm.",
+    "routing": "0.25 mm F.Cu D0 trace along the left carrier edge from module pad 1 to SW1 pad 1, with 45-degree corners and clearance around the M2 screw-head keepouts; SW1 pad 2 connects by F.Cu to a 0.6/0.3 mm GND via at (61.7,56.8) and the B.Cu ground plane.",
+    "placement_note": "Top access above the centered module, between the two upper M2 mounting holes and outside the module courtyard and antenna keepout; carrier outline is 22 x 38 mm.",
     "electrical_note": "Internal GPIO pull-up only; normally open switch adds no intended DC conduction path while released. Actual leakage and standby current require prototype measurement.",
     "behavior": "Hold 5 seconds for factory reset; Matter/Thread user state is erased, provisioned Matter setup credentials are retained.",
     "datasheet_url": "https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf",
@@ -879,6 +879,173 @@
       "path": "3dmodels/SW_SPST_B3U-1000P.step",
       "source": "Installed KiCad 10.0.6 Button_Switch_SMD.3dshapes/SW_SPST_B3U-1000P.step",
       "sha256": "4b5ee4da023d76030db22a90f5835f3691d5e4e9fc41b3f37b2c5922c65d307b"
+    }
+  },
+  "carrier_outline": {
+    "coordinate_frame": "Absolute carrier KiCad coordinates in mm",
+    "bounds_mm": [
+      49.0,
+      50.0,
+      71.0,
+      88.0
+    ],
+    "size_mm": [
+      22.0,
+      38.0
+    ],
+    "center_mm": [
+      60.0,
+      69.0
+    ]
+  },
+  "accelerometer": {
+    "reference": "U2",
+    "part": "BMA400",
+    "carrier_placement": {
+      "x_mm": 60.0,
+      "y_mm": 69.0,
+      "rotation_deg": 0,
+      "side": "back"
+    },
+    "placement_note": "Package center coincides with the geometric center of the 22 x 38 mm carrier. The six sensor placements (U2, R1/R2, C1-C3) occupy the back; U1 remains on the front, rotated 90 degrees and centered along board length while retaining side-edge USB access. The antenna keepout remains clear of the sensor island.",
+    "ground_connection": "Pads 8 and 9 use solid B.Cu zone connections. Two front-side ground bridges join divided plane regions: vias at (61.15,69.05)/(61.15,70.5) and (58.2,72.4)/(60.7,72.4); the latter bridge takes a 45-degree detour above the module-specific VBAT land."
+  },
+  "mounting_holes": {
+    "footprint": "Board:MountingHole_2.2mm_M2",
+    "drill_diameter_mm": 2.2,
+    "plated": false,
+    "coordinate_frame": "Absolute carrier KiCad coordinates in mm",
+    "holes": [
+      {
+        "reference": "H1",
+        "center_mm": [
+          52,
+          85
+        ]
+      },
+      {
+        "reference": "H2",
+        "center_mm": [
+          68,
+          85
+        ]
+      },
+      {
+        "reference": "H7",
+        "center_mm": [
+          52,
+          53
+        ]
+      },
+      {
+        "reference": "H8",
+        "center_mm": [
+          68,
+          53
+        ]
+      }
+    ],
+    "note": "Four opposing corner supports span 16 x 32 mm and surround the centered sensor. H3-H6 remain separate 1.5 mm module probe-access holes.",
+    "screw_head_copper_keepout": {
+      "minimum_radius_mm": 2.45,
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "forbid": [
+        "tracks",
+        "vias",
+        "zone_fills"
+      ],
+      "polygon": "64-sided polygon circumscribed about a 2.45 mm radius circle at each mounting center; NPTH mounting pad remains permitted."
+    }
+  },
+  "routing_validation": {
+    "date": "2026-10-20",
+    "policy": "No perpendicular same-net, same-layer copper segment joins, including T junctions and pad/via junctions.",
+    "command": "python3 scripts/check-pcb-layout.py hw/board-nRF52840/board-nRF52840.kicad_pcb"
+  },
+  "assembly_sides": {
+    "front": [
+      "U1",
+      "SW1"
+    ],
+    "back": [
+      "U2",
+      "R1",
+      "R2",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "manual_through_hole": [
+      "J1"
+    ]
+  },
+  "carrier_layout": {
+    "passive_placements": {
+      "C1": {
+        "center_mm": [
+          56.5,
+          68.75
+        ],
+        "rotation_deg": 180,
+        "side": "back"
+      },
+      "C2": {
+        "center_mm": [
+          63.5,
+          71.5
+        ],
+        "rotation_deg": 0,
+        "side": "back"
+      },
+      "C3": {
+        "center_mm": [
+          65,
+          74
+        ],
+        "rotation_deg": 180,
+        "side": "back"
+      },
+      "R1": {
+        "center_mm": [
+          57.5,
+          71.25
+        ],
+        "rotation_deg": 0,
+        "side": "back"
+      },
+      "R2": {
+        "center_mm": [
+          57.5,
+          74
+        ],
+        "rotation_deg": 0,
+        "side": "back"
+      }
+    },
+    "J1": {
+      "center_mm": [
+        59,
+        81
+      ],
+      "rotation_deg": 0,
+      "side": "front"
+    },
+    "TP1": {
+      "center_mm": [
+        67.5,
+        81
+      ],
+      "side": "back"
+    },
+    "TP2": {
+      "center_mm": [
+        67.5,
+        79
+      ],
+      "side": "back"
     }
   }
 }
